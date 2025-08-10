@@ -1,0 +1,76 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: idurar_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpassword
+      MONGO_INITDB_DATABASE: idurar_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - idurar_network
+
+  # Backend Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: idurar_backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8888
+      - DATABASE=mongodb://idurar_user:userpassword@mongodb:27017/idurar_db
+      - JWT_SECRET=your_super_secure_jwt_secret_key_change_this_in_production
+      - OPENSSL_CONF=/dev/null
+      - PUBLIC_SERVER_FILE=http://localhost:8888/
+      # Optional API keys - uncomment and set if needed
+      # - RESEND_API=your_resend_api_key
+      # - OPENAI_API_KEY=your_openai_api_key
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mongodb
+    volumes:
+      - backend_uploads:/app/public/uploads
+    networks:
+      - idurar_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_BACKEND_SERVER: http://localhost:8888/
+        VITE_FILE_BASE_URL: http://localhost:8888/
+        PROD: true
+    container_name: idurar_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - idurar_network
+
+volumes:
+  mongodb_data:
+    driver: local
+  backend_uploads:
+    driver: local
+
+networks:
+  idurar_network:
+    driver: bridge
