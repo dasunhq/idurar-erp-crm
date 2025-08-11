@@ -3,8 +3,8 @@ db = db.getSiblingDB("idurar_db");
 
 // Create user for the application
 db.createUser({
-  user: "idurar_user",
-  pwd: "userpassword",
+  user: "admin@gmail.com",
+  pwd: "admin123",
   roles: [
     {
       role: "readWrite",
