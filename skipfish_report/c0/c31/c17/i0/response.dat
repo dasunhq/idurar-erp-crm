@@ -1,0 +1,14 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 2042
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-7fa"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-2041/2042
+
+import{ar as k,aq as E,a as c,ap as O,ah as t}from"./index-C4nMWe5y.js";import{P as A}from"./index-Ci5STuGe.js";import{a0 as C,E as T,X as D,a2 as I,G as L}from"./IdurarOs-BCtZVZqe.js";import{b as B}from"./ErpApp-BZucdkXu.js";import{e as b}from"./actions-ysozhQMY.js";import{d as N}from"./selectors-DquMLP7b.js";import{c as r}from"./calculate-DbSGk6nY.js";import{s as S}from"./index-KrFx5yLV.js";import{T as G}from"./index-Bc3jZFJd.js";import{C as H}from"./CloseCircleOutlined-Bi0FNh2q.js";import{A as R}from"./ArrowLeftOutlined-4q-F716W.js";import{P as X}from"./PlusOutlined-CUdEX3TB.js";function _({form:l}){const u=L(),o=()=>{l.submit()};return t.jsx(T,{onClick:o,type:"primary",icon:t.jsx(X,{}),children:u("Save")})}function st({config:l,CreateForm:u}){const o=L(),f=k(),m=E();c.useEffect(()=>{f(B.list({entity:"setting"}))},[]);let{entity:n}=l;const{isLoading:q,isSuccess:h,result:v}=O(N),[p]=C.useForm(),[w,j]=c.useState(0),[F,y]=c.useState(0),P=(s,i)=>{const a=i.items;let d=0,g=0;a&&(a.map(e=>{if(e){if(e.offerPrice&&e.quantity){let x=r.multiply(e.quantity,e.offerPrice);g=r.add(g,x)}if(e.quantity&&e.price){let x=r.multiply(e.quantity,e.price);d=r.add(d,x)}}}),j(d),y(g))};c.useEffect(()=>(h&&(p.resetFields(),f(b.resetAction({actionType:"create"})),j(0),y(0),m(`/${n.toLowerCase()}/read/${v._id}`)),()=>{}),[h]);const $=s=>{if(console.log("🚀 ~ onSubmit ~ fieldsValue:",s),s&&s.items){let i=[...s.items];i.map(a=>{a.total=r.multiply(a.quantity,a.price)}),s={...s,items:i}}f(b.create({entity:n,jsonData:s}))};return t.jsxs(t.Fragment,{children:[t.jsx(A,{onBack:()=>{m(`/${n.toLowerCase()}`)},backIcon:t.jsx(R,{}),title:o("New"),ghost:!1,tags:t.jsx(G,{children:o("Draft")}),extra:[t.jsx(T,{onClick:()=>m(`/${n.toLowerCase()}`),icon:t.jsx(H,{}),children:o("Cancel")},`${S.generate()}`),t.jsx(_,{form:p},`${S.generate()}`)],style:{padding:"20px 0px"}}),t.jsx(D,{dashed:!0}),t.jsx(I,{isLoading:q,children:t.jsx(C,{form:p,layout:"vertical",onFinish:$,onValuesChange:P,children:t.jsx(u,{subTotal:w,offerTotal:F})})})]})}export{st as C};

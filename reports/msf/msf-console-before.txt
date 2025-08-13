@@ -1,0 +1,56 @@
+[1m[34m[*][0m Spooling to file /home/kali/Projects/idurar-erp-crm/msf-console.txt...
+[0m[1m[34m[*][0m Nmap: Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-01 14:03 +0530
+[1m[34m[*][0m Nmap: Nmap scan report for localhost (127.0.0.1)
+[1m[34m[*][0m Nmap: Host is up (0.000058s latency).
+[1m[34m[*][0m Nmap: PORT     STATE SERVICE VERSION
+[1m[34m[*][0m Nmap: 3000/tcp open  http    nginx 1.29.1
+[1m[34m[*][0m Nmap: Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+[1m[34m[*][0m Nmap: Nmap done: 1 IP address (1 host up) scanned in 11.36 seconds
+[0m
+Hosts
+=====
+
+address    mac  name       os_name  os_flavor  os_sp  purpose  info  comments
+-------    ---  ----       -------  ---------  -----  -------  ----  --------
+127.0.0.1       localhost  Unknown                    device
+
+[0mServices
+========
+
+host       port  proto  name  state  info
+----       ----  -----  ----  -----  ----
+127.0.0.1  3000  tcp    http  open   nginx 1.29.1
+
+[0m[1m[34m[*][0m Starting export of workspace localhost3000 to /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml ]...
+[1m[34m[*][0m Finished export of workspace localhost3000 to /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml ]...
+[0mUsage: spool <off>|<filename>
+
+Example:
+  spool /tmp/console.log
+
+[0m[1m[34m[*][0m Spooling to file /home/kali/Projects/idurar-erp-crm/msf-console.txt...
+[0m[1m[34m[*][0m Nmap: Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-01 14:06 +0530
+[1m[34m[*][0m Nmap: Nmap scan report for localhost (127.0.0.1)
+[1m[34m[*][0m Nmap: Host is up (0.000078s latency).
+[1m[34m[*][0m Nmap: PORT     STATE SERVICE VERSION
+[1m[34m[*][0m Nmap: 3000/tcp open  http    nginx 1.29.1
+[1m[34m[*][0m Nmap: Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+[1m[34m[*][0m Nmap: Nmap done: 1 IP address (1 host up) scanned in 11.36 seconds
+[0m
+Hosts
+=====
+
+address    mac  name       os_name  os_flavor  os_sp  purpose  info  comments
+-------    ---  ----       -------  ---------  -----  -------  ----  --------
+127.0.0.1       localhost  Unknown                    device
+
+[0mServices
+========
+
+host       port  proto  name  state  info
+----       ----  -----  ----  -----  ----
+127.0.0.1  3000  tcp    http  open   nginx 1.29.1
+
+[0m[1m[34m[*][0m Starting export of workspace localhost3000 to /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml ]...
+[1m[34m[*][0m Finished export of workspace localhost3000 to /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml ]...
+[0m

@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 1400
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-578"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-1399/1400
+
+import{a as s,aq as W,ah as r}from"./index-C4nMWe5y.js";import{Z,G as _,J as $}from"./IdurarOs-BCtZVZqe.js";import{u as z}from"./useDebounce-BuyoAkM0.js";import{S as l,E as B}from"./index-DyraH4Lq.js";function M({entity:x,displayLabels:b,searchFields:E,outputValue:a="_id",redirectLabel:O="Add New",withRedirect:u=!1,urlToRedirect:j="/",value:t,onChange:c}){const f=_(),h={value:"redirectURL",label:`+ ${f(O)}`},[y,d]=s.useState([]),[A,C]=s.useState(void 0),n=s.useRef(!0),v=s.useRef(!1),[L,o]=s.useState(!1),[S,R]=s.useState(""),[m,q]=s.useState(""),N=W(),U=e=>{n.current=!1,c&&e&&c(e[a]||e),e==="redirectURL"&&u&&N(j)},[,D]=z(()=>{q(S)},500,[S]),T=async e=>await $.search({entity:x,options:e});let{onFetch:k,result:p,isSuccess:g,isLoading:w}=Z();const G=e=>b.map(i=>e[i]).join(" ");s.useEffect(()=>{const i=T({q:m,fields:E});return k(i),()=>{D()}},[m]);const J=e=>{v.current=!0,o(!0),R(e)};return s.useEffect(()=>{g?d(p):o(!1)},[g,p]),s.useEffect(()=>{t&&n.current&&(d([t]),C(t[a]||t),c(t[a]||t),n.current=!1)},[t]),r.jsxs(l,{loading:w,showSearch:!0,allowClear:!0,placeholder:f("Search"),defaultActiveFirstOption:!1,filterOption:!1,notFoundContent:L?"... Searching":r.jsx(B,{}),value:A,onSearch:J,onClear:()=>{o(!1)},onChange:U,style:{minWidth:"220px"},children:[y.map(e=>r.jsx(l.Option,{value:e[a]||e,children:G(e)},e[a]||e)),u&&r.jsx(l.Option,{value:h.value,children:h.label})]})}export{M as A};
+ontentLineq

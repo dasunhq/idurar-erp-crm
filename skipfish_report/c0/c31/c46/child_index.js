@@ -1,0 +1,4 @@
+var child = [
+  { 'dupe': false, 'type': 64, 'name': '[blank]=c:null}', 'dir': 'c0', 'linked': 1, 'url': 'http://localhost:3000/assets/index-hsTGyMzD.js?c:null};E.Button=ue;E.Avatar=ce;E.Input=me;E.Image=de;E.Node=$e;const', 'fetched': true, 'code': 200, 'len': 15011, 'decl_mime': 'application/javascript', 'sniff_mime': '[none]', 'cset': '[none]', 'missing': false, 'csens': false, 'child_cnt': 0, 'issue_cnt': [ 2, 0, 0, 0, 0 ], 'sig': 0x31ce1d4a },
+  { 'dupe': false, 'type': 64, 'name': 'E.Avatar=ce', 'dir': 'c1', 'linked': 1, 'url': 'http://localhost:3000/assets/index-hsTGyMzD.js?c:null};E.Button=ue;E.Avatar=ce;E.Input=me;E.Image=de;E.Node=$e;const', 'fetched': true, 'code': 200, 'len': 15011, 'decl_mime': 'application/javascript', 'sniff_mime': '[none]', 'cset': '[none]', 'missing': false, 'csens': false, 'child_cnt': 0, 'issue_cnt': [ 2, 0, 0, 0, 0 ], 'sig': 0x31ce1d4a },
+];
