@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 676
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-2a4"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-675/676
+
+import{ah as a,ag as t}from"./index-C4nMWe5y.js";import{E as r}from"./index-CCAhvlYD.js";import{L as n}from"./IdurarOs-BCtZVZqe.js";const{Content:m}=n;function u({children:e}){return a.jsx(r,{children:a.jsx(m,{className:"whiteBox shadow layoutPadding",style:{margin:"30px auto",width:"100%",maxWidth:"1100px",minHeight:"600px"},children:e})})}const s=e=>e.erp,x=t([s],e=>e.current),d=t([s],e=>e.list),I=e=>t(d,c=>c.result.items.find(o=>o._id===e)),h=t([s],e=>e.create),y=t([s],e=>e.update),f=t([s],e=>e.recordPayment),E=t([s],e=>e.read),g=t([s],e=>e.delete);t([s],e=>e.search);const C=t([s],e=>e.mail);export{u as E,f as a,I as b,x as c,h as d,y as e,d as f,g,C as h,E as s};
+:

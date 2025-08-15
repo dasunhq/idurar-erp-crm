@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:24 GMT
+Content-Type: application/javascript
+Content-Length: 200
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-c8"
+Expires: Thu, 01 Oct 2026 06:45:24 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-199/200
+
+import{ap as r}from"./index-C4nMWe5y.js";import{r as a}from"./ErpApp-BZucdkXu.js";const m=()=>{const t=r(a);return{dateFormat:(t==null?void 0:t.idurar_app_date_format)??"DD/MM/YYYY"}};export{m as u};
+29à

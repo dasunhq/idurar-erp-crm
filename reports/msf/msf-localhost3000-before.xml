@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetasploitV5>
+<generated time="2025-10-01 08:36:55 UTC" user="kali" project="localhost3000" product="framework"/>
+<hosts>
+  <host>
+    <id>1</id>
+    <created-at>2025-10-01 08:33:32 UTC</created-at>
+    <address>127.0.0.1</address>
+    <mac/>
+    <comm></comm>
+    <name>localhost</name>
+    <state>alive</state>
+    <os-name>Unknown</os-name>
+    <os-flavor/>
+    <os-sp/>
+    <os-lang/>
+    <arch/>
+    <workspace-id>2</workspace-id>
+    <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+    <purpose>device</purpose>
+    <info/>
+    <comments/>
+    <scope/>
+    <virtual-host/>
+    <note-count>0</note-count>
+    <vuln-count>0</vuln-count>
+    <service-count>1</service-count>
+    <host-detail-count>0</host-detail-count>
+    <exploit-attempt-count>0</exploit-attempt-count>
+    <cred-count>0</cred-count>
+    <detected-arch/>
+    <os-family/>
+    <host_details>
+    </host_details>
+    <exploit_attempts>
+    </exploit_attempts>
+    <services>
+      <service>
+      <id>1</id>
+      <host-id>1</host-id>
+      <created-at>2025-10-01 08:33:32 UTC</created-at>
+      <port>3000</port>
+      <proto>tcp</proto>
+      <state>open</state>
+      <name>http</name>
+      <updated-at>2025-10-01 08:33:32 UTC</updated-at>
+      <info>nginx 1.29.1</info>
+      </service>
+    </services>
+    <notes>
+    </notes>
+    <vulns>
+    </vulns>
+  </host>
+</hosts>
+<events>
+  <event>
+      <id>9</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:20 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:20 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiHHdvcmtzcGFjZSBsb2NhbGhvc3QzMDAwBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>10</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:20 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:20 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiPXNwb29sIC9ob21lL2thbGkvUHJvamVjdHMvaWR1cmFyLWVycC1jcm0vbXNmLWNvbnNvbGUudHh0BjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>11</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:20 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:20 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiImRiX25tYXAgLXNWIC1wIDMwMDAgMTI3LjAuMC4xBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>12</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiCmhvc3RzBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>13</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiDXNlcnZpY2VzBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>14</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiTmRiX2V4cG9ydCAtZiB4bWwgL2hvbWUva2FsaS9Qcm9qZWN0cy9pZHVyYXItZXJwLWNybS9tc2YtbG9jYWxob3N0MzAwMC54bWwGOgZFVA==</info>
+  </event>
+
+  <event>
+      <id>15</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiCnNwb29sBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>16</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiCWV4aXQGOgZFVA==</info>
+  </event>
+
+  <event>
+      <id>17</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:33:33 UTC</created-at>
+      <name>ui_stop</name>
+      <updated-at>2025-10-01 08:33:33 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7AA==</info>
+  </event>
+
+  <event>
+      <id>20</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:43 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:43 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiHHdvcmtzcGFjZSBsb2NhbGhvc3QzMDAwBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>21</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:43 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:43 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiPXNwb29sIC9ob21lL2thbGkvUHJvamVjdHMvaWR1cmFyLWVycC1jcm0vbXNmLWNvbnNvbGUudHh0BjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>22</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:43 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:43 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiImRiX25tYXAgLXNWIC1wIDMwMDAgMTI3LjAuMC4xBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>23</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:55 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:55 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiCmhvc3RzBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>24</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:55 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:55 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiDXNlcnZpY2VzBjoGRVQ=</info>
+  </event>
+
+  <event>
+      <id>25</id>
+      <workspace-id>2</workspace-id>
+      <host-id/>
+      <created-at>2025-10-01 08:36:55 UTC</created-at>
+      <name>ui_command</name>
+      <updated-at>2025-10-01 08:36:55 UTC</updated-at>
+      <critical/>
+      <seen/>
+      <username/>
+      <info>BAh7BjoMY29tbWFuZEkiTmRiX2V4cG9ydCAtZiB4bWwgL2hvbWUva2FsaS9Qcm9qZWN0cy9pZHVyYXItZXJwLWNybS9tc2YtbG9jYWxob3N0MzAwMC54bWwGOgZFVA==</info>
+  </event>
+
+</events>
+<services>
+  <service>
+      <id>1</id>
+      <host-id>1</host-id>
+      <created-at>2025-10-01 08:33:32 UTC</created-at>
+      <port>3000</port>
+      <proto>tcp</proto>
+      <state>open</state>
+      <name>http</name>
+      <updated-at>2025-10-01 08:33:32 UTC</updated-at>
+      <info>nginx 1.29.1</info>
+  </service>
+
+</services>
+<web_sites>
+</web_sites>
+<web_pages>
+</web_pages>
+<web_forms>
+</web_forms>
+<web_vulns>
+</web_vulns>
+<module_details>
+</module_details>
+</MetasploitV5>

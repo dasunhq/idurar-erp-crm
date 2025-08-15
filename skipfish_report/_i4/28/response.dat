@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 1925
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-785"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-1924/1925
+
+import{ah as o}from"./index-C4nMWe5y.js";import{d as i}from"./index-Ci5STuGe.js";import"./index-CCAhvlYD.js";import{G as u}from"./IdurarOs-BCtZVZqe.js";import{E as f}from"./selectors-DquMLP7b.js";import{E as x}from"./index-C5wZysJn.js";import{u as T}from"./useMoney-5XCsrR9m.js";import{u as y}from"./useDate-BK7OBCbi.js";import"./ErpApp-BZucdkXu.js";import"./DownOutlined-BXn_Bs08.js";import"./index-Cx6IiUbX.js";import"./useDebounce-BuyoAkM0.js";import"./index-DyraH4Lq.js";import"./actions-ysozhQMY.js";import"./index-KrFx5yLV.js";import"./Table-pdXRWxgE.js";import"./FilePdfOutlined-CAOrmpht.js";import"./DeleteOutlined-DOr4ck-Q.js";import"./ArrowLeftOutlined-4q-F716W.js";import"./helpers-BilhNsDy.js";import"./PlusOutlined-CUdEX3TB.js";import"./index-B6jV2cQt.js";import"./fade-CxtjAN5u.js";function E({config:t}){return o.jsx(f,{children:o.jsx(x,{config:t})})}function k(){const t=u(),{dateFormat:a}=y(),m="quote",{moneyFormatter:n}=T(),s={entity:"client",displayLabels:["name"],searchFields:"name"},l=["number","client.name"],c=[{title:t("Number"),dataIndex:"number"},{title:t("Client"),dataIndex:["client","name"]},{title:t("Date"),dataIndex:"date",render:e=>i(e).format(a)},{title:t("expired Date"),dataIndex:"expiredDate",render:e=>i(e).format(a)},{title:t("Sub Total"),dataIndex:"subTotal",onCell:()=>({style:{textAlign:"right",whiteSpace:"nowrap",direction:"ltr"}}),render:(e,r)=>n({amount:e,currency_code:r.currency})},{title:t("Total"),dataIndex:"total",onCell:()=>({style:{textAlign:"right",whiteSpace:"nowrap",direction:"ltr"}}),render:(e,r)=>n({amount:e,currency_code:r.currency})},{title:t("Status"),dataIndex:"status"}],d={PANEL_TITLE:t("proforma invoice"),DATATABLE_TITLE:t("proforma invoice_list"),ADD_NEW_ENTITY:t("add_new_proforma invoice"),ENTITY_NAME:t("proforma invoice")},p={...{entity:m,...d},dataTableColumns:c,searchConfig:s,deleteModalLabels:l};return o.jsx(E,{config:p})}export{k as default};
+U

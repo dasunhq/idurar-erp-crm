@@ -1,0 +1,14 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 1204
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-4b4"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-1203/1204
+
+import{ah as o}from"./index-C4nMWe5y.js";import{G as e}from"./IdurarOs-BCtZVZqe.js";import"./index-CCAhvlYD.js";import{E as p}from"./selectors-DquMLP7b.js";import{C as a}from"./CreateItem-BzUsvAXm.js";import{Q as s}from"./QuoteForm-ft3cbe5M.js";import"./index-Ci5STuGe.js";import"./ErpApp-BZucdkXu.js";import"./DownOutlined-BXn_Bs08.js";import"./actions-ysozhQMY.js";import"./calculate-DbSGk6nY.js";import"./useMoney-5XCsrR9m.js";import"./index-KrFx5yLV.js";import"./index-Bc3jZFJd.js";import"./CloseCircleOutlined-Bi0FNh2q.js";import"./ArrowLeftOutlined-4q-F716W.js";import"./PlusOutlined-CUdEX3TB.js";import"./index-Cx6IiUbX.js";import"./useDebounce-BuyoAkM0.js";import"./index-DyraH4Lq.js";import"./index-CAOdWOmb.js";import"./index-6VrU-YIl.js";import"./DeleteOutlined-DOr4ck-Q.js";import"./useDate-BK7OBCbi.js";import"./index-D1pTFRzE.js";import"./useFetch-CPBJnrcm.js";import"./color-CnuJOIlI.js";function n({config:t}){return o.jsx(p,{children:o.jsx(a,{config:t,CreateForm:s})})}function B(){const t=e(),r="quote",m={PANEL_TITLE:t("quote"),DATATABLE_TITLE:t("quote_list"),ADD_NEW_ENTITY:t("add_new_quote"),ENTITY_NAME:t("quote")},i={entity:r,...m};return o.jsx(n,{config:i})}export{B as default};

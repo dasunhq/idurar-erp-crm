@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 1250
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-4e2"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-1249/1250
+
+import{ah as r}from"./index-C4nMWe5y.js";import{G as e}from"./IdurarOs-BCtZVZqe.js";import"./index-CCAhvlYD.js";import{E as p}from"./selectors-DquMLP7b.js";import{C as n}from"./CreateItem-BzUsvAXm.js";import{I as a}from"./InvoiceForm-8U_iHxe2.js";import"./index-Ci5STuGe.js";import"./ErpApp-BZucdkXu.js";import"./DownOutlined-BXn_Bs08.js";import"./actions-ysozhQMY.js";import"./calculate-DbSGk6nY.js";import"./useMoney-5XCsrR9m.js";import"./index-KrFx5yLV.js";import"./index-Bc3jZFJd.js";import"./CloseCircleOutlined-Bi0FNh2q.js";import"./ArrowLeftOutlined-4q-F716W.js";import"./PlusOutlined-CUdEX3TB.js";import"./index-Cx6IiUbX.js";import"./useDebounce-BuyoAkM0.js";import"./index-DyraH4Lq.js";import"./index-CAOdWOmb.js";import"./index-6VrU-YIl.js";import"./DeleteOutlined-DOr4ck-Q.js";import"./useDate-BK7OBCbi.js";import"./index-D1pTFRzE.js";import"./useFetch-CPBJnrcm.js";import"./color-CnuJOIlI.js";function s({config:t}){return r.jsx(p,{children:r.jsx(n,{config:t,CreateForm:a})})}function B(){const t="invoice",o=e(),i={PANEL_TITLE:o("invoice"),DATATABLE_TITLE:o("invoice_list"),ADD_NEW_ENTITY:o("add_new_invoice"),ENTITY_NAME:o("invoice"),RECORD_ENTITY:o("record_payment")},m={entity:t,...i};return r.jsx(s,{config:m})}export{B as default};
+Å

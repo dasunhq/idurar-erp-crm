@@ -1,0 +1,15 @@
+HTTP/1.1 200 Partial Content
+Server: nginx/1.29.1
+Date: Wed, 01 Oct 2025 06:45:35 GMT
+Content-Type: application/javascript
+Content-Length: 389
+Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
+Connection: keep-alive
+ETag: "68dcad5b-185"
+Expires: Thu, 01 Oct 2026 06:45:35 GMT
+Cache-Control: max-age=31536000
+Cache-Control: public, immutable
+Content-Range: bytes 0-388/389
+
+import{ar as e,aq as r,a,ah as u,ax as c}from"./index-C4nMWe5y.js";import{M as i}from"./IdurarOs-BCtZVZqe.js";import{c as f}from"./actions-DNtUCd0X.js";import{e as n}from"./actions-ysozhQMY.js";const d=()=>{const t=e(),s=r();function o(){t(i())}return a.useLayoutEffect(()=>{t(f.resetState()),t(n.resetState())},[]),a.useEffect(()=>{o(),s("/login")},[]),u.jsx(c,{})};export{d as default};
+new
