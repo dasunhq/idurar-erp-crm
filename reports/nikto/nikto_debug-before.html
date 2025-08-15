@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikto Debug Report - Before</title>
+    <style>
+        body {
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        .log-line {
+            margin: 5px 0;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            border-left: 3px solid transparent;
+        }
+        .version-line {
+            background: #1a365d;
+            border-left-color: #3182ce;
+            color: #63b3ed;
+            font-weight: bold;
+        }
+        .verbose-line {
+            background: #2d3748;
+            border-left-color: #38a169;
+            color: #68d391;
+        }
+        .plugin-line {
+            background: #322659;
+            border-left-color: #805ad5;
+            color: #b794f6;
+        }
+        .separator-line {
+            background: #4a5568;
+            border-left-color: #718096;
+            color: #a0aec0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .timestamp {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .plugin-name {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4fd1c7;
+        }
+        .stat-label {
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">🔍 Nikto Debug Report</div>
+            <div class="subtitle">Web Vulnerability Scanner Debug Log - Before Analysis</div>
+        </div>
+        <div class="content">
+<div class="log-line version-line">- Nikto v2.5.0</div>
+<div class="log-line separator-line">---------------------------------------------------------------------------</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_drupal</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Drupal Specific Tests&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_fileops</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;File Operations&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_dishwasher</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;dishwasher&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_text</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Text reports&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_apache_expect_xss</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Apache Expect XSS&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_headers</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;HTTP Headers&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_sitefiles</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Site Files&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_xml</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Report as XML&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_robots</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Robots&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_ms10_070</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;ms10-070 Check&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_auth</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Test Authentication&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_shellshock</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;shellshock&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_nbe</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;NBE reports&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_paths</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Path Search&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_cookies</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;HTTP Cookie Internal IP&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_html</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Report as HTML&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_parked</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Parked Detection&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_ssl</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;SSL and cert checks&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_negotiate</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Negotiate&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_strutshock</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;strutshock&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_sqlg</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Generic SQL reports&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_put_del_test</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Put/Delete test&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_csv</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;CSV reports&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_cgi</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;CGI&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_msgs</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Server Messages&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_docker_registry</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;docker_registry&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_origin_reflection</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;CORS Origin Reflection&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_core</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_dictionary_attack</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Dictionary attack&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_multiple_index</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Multiple Index&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_report_json</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;JSON reports&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_outdated</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Outdated&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_apacheusers</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Apache Users&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_tests</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Nikto Tests&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_siebel</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Siebel Checks&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_clientaccesspolicy</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;clientaccesspolicy.xml&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_content_search</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Content Search&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_embedded</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Embedded Detection&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_httpoptions</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;HTTP Options&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_domino</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;IBM/Lotus Domino Specific Tests&quot; plugin.</div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Initialising plugin <span class="plugin-name">nikto_favicon</span></div>
+<div class="log-line plugin-line">V:Mon Sep 29 06:44:43 2025 - Loaded &quot;Favicon&quot; plugin.</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Getting targets</div>
+<div class="log-line">- ERROR: Target host &#x27;::1&#x27; contains more than one colon (:). If specifying an IPv6 target, use the [IPv6] format.</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Target: port:3000</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Opening reports (none, )</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - 6954 server checks loaded</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;Drupal Specific Tests&quot; plugin</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;HTTP Headers&quot; plugin</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;IBM/Lotus Domino Specific Tests&quot; plugin</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;Favicon&quot; plugin</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;Test Authentication&quot; plugin</div>
+<div class="log-line verbose-line">V:<span class="timestamp">Mon Sep 29 06:44:43 2025</span> - Running start for &quot;Content Search&quot; plugin</div>
+<div class="log-line">+ 0 host(s) tested</div>
+<div class="log-line verbose-line">V:Mon Sep 29 06:44:43 2025 + 0 requests made in 0 seconds</div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">Version Info</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">41</div>
+                    <div class="stat-label">Plugins Loaded</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">11</div>
+                    <div class="stat-label">Debug Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">97</div>
+                    <div class="stat-label">Total Log Lines</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

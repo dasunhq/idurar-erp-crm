@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retire.js Vulnerability Report - Before</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2d3436, #636e72);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .title {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px;
+        }
+        .section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 6px solid #e74c3c;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .vulnerability-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #e74c3c;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .vuln-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        .vuln-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minspace(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .detail-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-value {
+            color: #2c3e50;
+            font-family: monospace;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+        .severity-high {
+            border-left-color: #dc3545;
+        }
+        .severity-medium {
+            border-left-color: #ffc107;
+        }
+        .severity-low {
+            border-left-color: #28a745;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-high {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .badge-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .badge-low {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .json-preview {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minwidth(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">⚠️ Retire.js Vulnerability Report</div>
+            <div class="subtitle">JavaScript Library Security Analysis - Before</div>
+        </div>
+        <div class="content">
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Total Vulnerabilities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">High Severity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Medium Severity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Low Severity</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">📄 Raw JSON Data</div>
+                <div class="json-preview">{
+  &quot;version&quot;: &quot;5.3.0&quot;,
+  &quot;start&quot;: &quot;2025-10-01T08:25:18.533Z&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;file&quot;: &quot;/home/kali/Projects/idurar-erp-crm/frontend/node_modules/axios/dist/axios.js&quot;,
+      &quot;results&quot;: [
+        {
+          &quot;version&quot;: &quot;1.6.2&quot;,
+          &quot;component&quot;: &quot;axios&quot;,
+          &quot;detection&quot;: &quot;filecontent&quot;,
+          &quot;vulnerabilities&quot;: [
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/pull/6300&quot;
+              ],
+              &quot;below&quot;: &quot;1.6.8&quot;,
+              &quot;severity&quot;: &quot;medium&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials&quot;,
+                &quot;PR&quot;: &quot;6300&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-200&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-8hc4-vh64-cxmj&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2024-39338&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/pull/6539&quot;,
+                &quot;https://github.com/axios/axios/pull/6543&quot;,
+                &quot;https://github.com/axios/axios/commit/6b6b605eaf73852fb2dae033f1e786155959de3a&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.7.4&quot;,
+                &quot;https://jeffhacks.com/advisories/2024/06/24/CVE-2024-39338.html&quot;
+              ],
+              &quot;below&quot;: &quot;1.7.4&quot;,
+              &quot;atOrAbove&quot;: &quot;1.3.2&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Server-Side Request Forgery in axios&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2024-39338&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-8hc4-vh64-cxmj&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2025-27152&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/commit/fb8eec214ce7744b5ca787f2c3b8339b2f54b00f&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.8.2&quot;
+              ],
+              &quot;below&quot;: &quot;1.8.2&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-27152&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-jr5f-v2jv-69x6&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;https://github.com/axios/axios/pull/7011&quot;,
+                &quot;https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.12.0&quot;
+              ],
+              &quot;below&quot;: &quot;1.12.0&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;## Summary\n\nWhen Axios runs on Node.js and is given a URL with the `data:` scheme, it does not perform HTTP. Instead, its Node http adapter decodes the entire payload into memory (`Buffer`/`Blob`) and returns a synthetic 200 response.\nThis path ignores `maxContentLength` / `maxBodyLength` (which only protect HTTP responses), so an attacker can supply a very large `data:` URI and cause the process to allocate unbounded memory and crash (DoS), even if the caller requested `responseType: &#x27;stream&#x27;`.&quot;,
+                &quot;githubID&quot;: &quot;GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-58754&quot;
+                ]
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-770&quot;
+              ]
+            }
+          ],
+          &quot;licenses&quot;: [
+            &quot;MIT&quot;
+          ]
+        }
+      ]
+    },
+    {
+      &quot;file&quot;: &quot;/home/kali/Projects/idurar-erp-crm/frontend/node_modules/axios/dist/axios.min.js&quot;,
+      &quot;results&quot;: [
+        {
+          &quot;version&quot;: &quot;1.6.2&quot;,
+          &quot;component&quot;: &quot;axios&quot;,
+          &quot;detection&quot;: &quot;filecontent&quot;,
+          &quot;vulnerabilities&quot;: [
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/pull/6300&quot;
+              ],
+              &quot;below&quot;: &quot;1.6.8&quot;,
+              &quot;severity&quot;: &quot;medium&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials&quot;,
+                &quot;PR&quot;: &quot;6300&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-200&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-8hc4-vh64-cxmj&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2024-39338&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/pull/6539&quot;,
+                &quot;https://github.com/axios/axios/pull/6543&quot;,
+                &quot;https://github.com/axios/axios/commit/6b6b605eaf73852fb2dae033f1e786155959de3a&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.7.4&quot;,
+                &quot;https://jeffhacks.com/advisories/2024/06/24/CVE-2024-39338.html&quot;
+              ],
+              &quot;below&quot;: &quot;1.7.4&quot;,
+              &quot;atOrAbove&quot;: &quot;1.3.2&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Server-Side Request Forgery in axios&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2024-39338&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-8hc4-vh64-cxmj&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2025-27152&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/commit/fb8eec214ce7744b5ca787f2c3b8339b2f54b00f&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.8.2&quot;
+              ],
+              &quot;below&quot;: &quot;1.8.2&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-27152&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-jr5f-v2jv-69x6&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;https://github.com/axios/axios/pull/7011&quot;,
+                &quot;https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.12.0&quot;
+              ],
+              &quot;below&quot;: &quot;1.12.0&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;## Summary\n\nWhen Axios runs on Node.js and is given a URL with the `data:` scheme, it does not perform HTTP. Instead, its Node http adapter decodes the entire payload into memory (`Buffer`/`Blob`) and returns a synthetic 200 response.\nThis path ignores `maxContentLength` / `maxBodyLength` (which only protect HTTP responses), so an attacker can supply a very large `data:` URI and cause the process to allocate unbounded memory and crash (DoS), even if the caller requested `responseType: &#x27;stream&#x27;`.&quot;,
+                &quot;githubID&quot;: &quot;GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-58754&quot;
+                ]
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-770&quot;
+              ]
+            }
+          ],
+          &quot;licenses&quot;: [
+            &quot;MIT&quot;
+          ]
+        }
+      ]
+    },
+    {
+      &quot;file&quot;: &quot;/home/kali/Projects/idurar-erp-crm/frontend/node_modules/axios/dist/esm/axios.min.js&quot;,
+      &quot;results&quot;: [
+        {
+          &quot;version&quot;: &quot;1.6.2&quot;,
+          &quot;component&quot;: &quot;axios&quot;,
+          &quot;detection&quot;: &quot;filecontent&quot;,
+          &quot;vulnerabilities&quot;: [
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/pull/6300&quot;
+              ],
+              &quot;below&quot;: &quot;1.6.8&quot;,
+              &quot;severity&quot;: &quot;medium&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials&quot;,
+                &quot;PR&quot;: &quot;6300&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-200&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-8hc4-vh64-cxmj&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2024-39338&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/pull/6539&quot;,
+                &quot;https://github.com/axios/axios/pull/6543&quot;,
+                &quot;https://github.com/axios/axios/commit/6b6b605eaf73852fb2dae033f1e786155959de3a&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.7.4&quot;,
+                &quot;https://jeffhacks.com/advisories/2024/06/24/CVE-2024-39338.html&quot;
+              ],
+              &quot;below&quot;: &quot;1.7.4&quot;,
+              &quot;atOrAbove&quot;: &quot;1.3.2&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Server-Side Request Forgery in axios&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2024-39338&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-8hc4-vh64-cxmj&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2025-27152&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/commit/fb8eec214ce7744b5ca787f2c3b8339b2f54b00f&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.8.2&quot;
+              ],
+              &quot;below&quot;: &quot;1.8.2&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-27152&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-jr5f-v2jv-69x6&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;https://github.com/axios/axios/pull/7011&quot;,
+                &quot;https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.12.0&quot;
+              ],
+              &quot;below&quot;: &quot;1.12.0&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;## Summary\n\nWhen Axios runs on Node.js and is given a URL with the `data:` scheme, it does not perform HTTP. Instead, its Node http adapter decodes the entire payload into memory (`Buffer`/`Blob`) and returns a synthetic 200 response.\nThis path ignores `maxContentLength` / `maxBodyLength` (which only protect HTTP responses), so an attacker can supply a very large `data:` URI and cause the process to allocate unbounded memory and crash (DoS), even if the caller requested `responseType: &#x27;stream&#x27;`.&quot;,
+                &quot;githubID&quot;: &quot;GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-58754&quot;
+                ]
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-770&quot;
+              ]
+            }
+          ],
+          &quot;licenses&quot;: [
+            &quot;MIT&quot;
+          ]
+        }
+      ]
+    },
+    {
+      &quot;file&quot;: &quot;/home/kali/Projects/idurar-erp-crm/frontend/node_modules/axios/dist/esm/axios.js&quot;,
+      &quot;results&quot;: [
+        {
+          &quot;version&quot;: &quot;1.6.2&quot;,
+          &quot;component&quot;: &quot;axios&quot;,
+          &quot;detection&quot;: &quot;filecontent&quot;,
+          &quot;vulnerabilities&quot;: [
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/pull/6300&quot;
+              ],
+              &quot;below&quot;: &quot;1.6.8&quot;,
+              &quot;severity&quot;: &quot;medium&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials&quot;,
+                &quot;PR&quot;: &quot;6300&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-200&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-8hc4-vh64-cxmj&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2024-39338&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/pull/6539&quot;,
+                &quot;https://github.com/axios/axios/pull/6543&quot;,
+                &quot;https://github.com/axios/axios/commit/6b6b605eaf73852fb2dae033f1e786155959de3a&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.7.4&quot;,
+                &quot;https://jeffhacks.com/advisories/2024/06/24/CVE-2024-39338.html&quot;
+              ],
+              &quot;below&quot;: &quot;1.7.4&quot;,
+              &quot;atOrAbove&quot;: &quot;1.3.2&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;Server-Side Request Forgery in axios&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2024-39338&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-8hc4-vh64-cxmj&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-jr5f-v2jv-69x6&quot;,
+                &quot;https://nvd.nist.gov/vuln/detail/CVE-2025-27152&quot;,
+                &quot;https://github.com/axios/axios/issues/6463&quot;,
+                &quot;https://github.com/axios/axios/commit/fb8eec214ce7744b5ca787f2c3b8339b2f54b00f&quot;,
+                &quot;https://github.com/axios/axios&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.8.2&quot;
+              ],
+              &quot;below&quot;: &quot;1.8.2&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-27152&quot;
+                ],
+                &quot;githubID&quot;: &quot;GHSA-jr5f-v2jv-69x6&quot;
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-918&quot;
+              ]
+            },
+            {
+              &quot;info&quot;: [
+                &quot;https://github.com/axios/axios/security/advisories/GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;https://github.com/axios/axios/pull/7011&quot;,
+                &quot;https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593&quot;,
+                &quot;https://github.com/axios/axios/releases/tag/v1.12.0&quot;
+              ],
+              &quot;below&quot;: &quot;1.12.0&quot;,
+              &quot;atOrAbove&quot;: &quot;1.0.0&quot;,
+              &quot;severity&quot;: &quot;high&quot;,
+              &quot;identifiers&quot;: {
+                &quot;summary&quot;: &quot;## Summary\n\nWhen Axios runs on Node.js and is given a URL with the `data:` scheme, it does not perform HTTP. Instead, its Node http adapter decodes the entire payload into memory (`Buffer`/`Blob`) and returns a synthetic 200 response.\nThis path ignores `maxContentLength` / `maxBodyLength` (which only protect HTTP responses), so an attacker can supply a very large `data:` URI and cause the process to allocate unbounded memory and crash (DoS), even if the caller requested `responseType: &#x27;stream&#x27;`.&quot;,
+                &quot;githubID&quot;: &quot;GHSA-4hjh-wcwx-xvwj&quot;,
+                &quot;CVE&quot;: [
+                  &quot;CVE-2025-58754&quot;
+                ]
+              },
+              &quot;cwe&quot;: [
+                &quot;CWE-770&quot;
+              ]
+            }
+          ],
+          &quot;licenses&quot;: [
+            &quot;MIT&quot;
+          ]
+        }
+      ]
+    }
+  ],
+  &quot;messages&quot;: [],
+  &quot;errors&quot;: [
+    &quot;Could not parse file: /home/kali/Projects/idurar-erp-crm/backend/node_modules/bcryptjs/src/bower.json&quot;
+  ],
+  &quot;time&quot;: 32.507
+}</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

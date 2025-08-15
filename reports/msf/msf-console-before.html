@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MSF Console Report - Before</title>
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        background: linear-gradient(135deg, #1e293b, #334155);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #30363d;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      .title {
+        color: #f97316;
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
+      }
+      .subtitle {
+        color: #6b7280;
+        font-size: 1.1em;
+      }
+      .content {
+        background-color: #161b22;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #30363d;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        white-space: pre-wrap;
+        overflow-x: auto;
+      }
+      .metasploit-output {
+        color: #58a6ff;
+      }
+      .nmap-output {
+        color: #7c3aed;
+      }
+      .host-info {
+        color: #10b981;
+      }
+      .service-info {
+        color: #f59e0b;
+      }
+      .section-header {
+        color: #ff6b6b;
+        font-weight: bold;
+        border-bottom: 2px solid #ff6b6b;
+        padding-bottom: 5px;
+        margin: 20px 0 10px 0;
+      }
+      .timestamp {
+        color: #9ca3af;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="title">🛡️ Metasploit Framework Console Report</div>
+        <div class="subtitle">Security Assessment - Before Analysis</div>
+        <div class="timestamp">Generated: October 1, 2025</div>
+      </div>
+      <div class="content">
+        <div class="section-header">Console Output</div>
+        <span class="metasploit-output"
+          >[*] Spooling to file
+          /home/kali/Projects/idurar-erp-crm/msf-console.txt...</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-01 14:03
+          +0530</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Nmap scan report for localhost (127.0.0.1)</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Host is up (0.000058s latency).</span
+        >
+        <span class="nmap-output">[*] Nmap: PORT STATE SERVICE VERSION</span>
+        <span class="service-info"
+          >[*] Nmap: 3000/tcp open http nginx 1.29.1</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Service detection performed. Please report any incorrect
+          results at https://nmap.org/submit/ .</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Nmap done: 1 IP address (1 host up) scanned in 11.36
+          seconds</span
+        >
+
+        <div class="section-header">Hosts</div>
+        <span class="host-info"
+          >address mac name os_name os_flavor os_sp purpose info comments
+          ------- --- ---- ------- --------- ----- ------- ---- --------
+          127.0.0.1 localhost Unknown device</span
+        >
+
+        <div class="section-header">Services</div>
+        <span class="service-info"
+          >host port proto name state info ---- ---- ----- ---- ----- ----
+          127.0.0.1 3000 tcp http open nginx 1.29.1</span
+        >
+
+        <span class="metasploit-output"
+          >[*] Starting export of workspace localhost3000 to
+          /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml
+          ]...</span
+        >
+        <span class="metasploit-output"
+          >[*] Finished export of workspace localhost3000 to
+          /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml
+          ]...</span
+        >
+
+        Usage: spool &lt;off&gt;|&lt;filename&gt; Example: spool
+        /tmp/console.log
+
+        <span class="metasploit-output"
+          >[*] Spooling to file
+          /home/kali/Projects/idurar-erp-crm/msf-console.txt...</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-01 14:06
+          +0530</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Nmap scan report for localhost (127.0.0.1)</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Host is up (0.000078s latency).</span
+        >
+        <span class="nmap-output">[*] Nmap: PORT STATE SERVICE VERSION</span>
+        <span class="service-info"
+          >[*] Nmap: 3000/tcp open http nginx 1.29.1</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Service detection performed. Please report any incorrect
+          results at https://nmap.org/submit/ .</span
+        >
+        <span class="nmap-output"
+          >[*] Nmap: Nmap done: 1 IP address (1 host up) scanned in 11.36
+          seconds</span
+        >
+
+        <div class="section-header">Hosts (Second Scan)</div>
+        <span class="host-info"
+          >address mac name os_name os_flavor os_sp purpose info comments
+          ------- --- ---- ------- --------- ----- ------- ---- --------
+          127.0.0.1 localhost Unknown device</span
+        >
+
+        <div class="section-header">Services (Second Scan)</div>
+        <span class="service-info"
+          >host port proto name state info ---- ---- ----- ---- ----- ----
+          127.0.0.1 3000 tcp http open nginx 1.29.1</span
+        >
+
+        <span class="metasploit-output"
+          >[*] Starting export of workspace localhost3000 to
+          /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml
+          ]...</span
+        >
+        <span class="metasploit-output"
+          >[*] Finished export of workspace localhost3000 to
+          /home/kali/Projects/idurar-erp-crm/msf-localhost3000.xml [ xml
+          ]...</span
+        >
+      </div>
+    </div>
+  </body>
+</html>

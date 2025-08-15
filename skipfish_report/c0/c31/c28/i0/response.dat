@@ -1,15 +1,0 @@
-HTTP/1.1 200 Partial Content
-Server: nginx/1.29.1
-Date: Wed, 01 Oct 2025 06:45:23 GMT
-Content-Type: application/javascript
-Content-Length: 2671
-Last-Modified: Wed, 01 Oct 2025 04:26:03 GMT
-Connection: keep-alive
-ETag: "68dcad5b-a6f"
-Expires: Thu, 01 Oct 2026 06:45:23 GMT
-Cache-Control: max-age=31536000
-Cache-Control: public, immutable
-Content-Range: bytes 0-2670/2671
-
-import{ah as e}from"./index-C4nMWe5y.js";import{a0 as d,_ as s,$ as r,C as i,G as c}from"./IdurarOs-BCtZVZqe.js";import{C as f}from"./CrudModule-BBK_-8xX.js";import{S as l}from"./index-Dycg0fYR.js";import"./actions-DNtUCd0X.js";import"./index-CCAhvlYD.js";import"./index-Ci5STuGe.js";import"./ErpApp-BZucdkXu.js";import"./DownOutlined-BXn_Bs08.js";import"./helpers-BilhNsDy.js";import"./index-B6jV2cQt.js";import"./fade-CxtjAN5u.js";import"./index-KrFx5yLV.js";import"./color-CnuJOIlI.js";import"./index-Bc3jZFJd.js";import"./useMoney-5XCsrR9m.js";import"./useDate-BK7OBCbi.js";import"./useDebounce-BuyoAkM0.js";import"./index-DyraH4Lq.js";import"./DeleteOutlined-DOr4ck-Q.js";import"./ArrowLeftOutlined-4q-F716W.js";import"./Table-pdXRWxgE.js";import"./PlusOutlined-CUdEX3TB.js";function m({isUpdateForm:t=!1}){const n=c();return e.jsxs(e.Fragment,{children:[e.jsx(d.Item,{label:n("Payment Mode"),name:"name",rules:[{required:!0}],children:e.jsx(s,{})}),e.jsx(d.Item,{label:n("Description"),name:"description",rules:[{required:!0}],children:e.jsx(s,{})}),e.jsx(d.Item,{label:n("enabled"),name:"enabled",style:{display:"inline-block",width:"calc(50%)",paddingRight:"5px"},valuePropName:"checked",initialValue:!0,children:e.jsx(l,{checkedChildren:e.jsx(r,{}),unCheckedChildren:e.jsx(i,{})})}),e.jsx(d.Item,{label:n("Default Mode"),name:"isDefault",style:{display:"inline-block",width:"calc(50%)",paddingLeft:"5px"},valuePropName:"checked",children:e.jsx(l,{checkedChildren:e.jsx(r,{}),unCheckedChildren:e.jsx(i,{})})})]})}function B(){const t=c(),n="paymentMode",p={displayLabels:["name"],searchFields:"name",outputValue:"_id"},u=["name"],x=[{title:t("Payment Mode"),dataIndex:"name"},{title:t("Description"),dataIndex:"description"},{title:t("Default"),dataIndex:"isDefault"},{title:t("enabled"),dataIndex:"enabled"}],h=[{title:t("Payment Mode"),dataIndex:"name"},{title:t("Description"),dataIndex:"description"},{title:t("Default"),dataIndex:"isDefault",key:"isDefault",onCell:(o,a)=>({props:{style:{width:"60px"}}}),render:(o,a)=>e.jsx(l,{checked:a.isDefault,checkedChildren:e.jsx(r,{}),unCheckedChildren:e.jsx(i,{})})},{title:t("enabled"),dataIndex:"enabled",key:"enabled",onCell:(o,a)=>({props:{style:{width:"60px"}}}),render:(o,a)=>e.jsx(l,{checked:a.enabled,checkedChildren:e.jsx(r,{}),unCheckedChildren:e.jsx(i,{})})}],j={PANEL_TITLE:t("payment_mode"),DATATABLE_TITLE:t("payment_mode_list"),ADD_NEW_ENTITY:t("add_new_payment_mode"),ENTITY_NAME:t("payment_mode")},C={...{entity:n,...j},readColumns:x,dataTableColumns:h,searchConfig:p,deleteModalLabels:u};return e.jsx(f,{createForm:e.jsx(m,{}),updateForm:e.jsx(m,{isUpdateForm:!0}),config:C})}export{B as default};
-r>!

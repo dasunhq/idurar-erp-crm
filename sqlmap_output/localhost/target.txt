@@ -1,1 +1,0 @@
-http://localhost:3000/search.php?id=1 (GET)  # /usr/bin/sqlmap -u http://localhost:3000/search.php?id=1 -p id --level=5 --risk=3 --batch --output-dir=/home/kali/Projects/idurar-erp-crm/sqlmap_output

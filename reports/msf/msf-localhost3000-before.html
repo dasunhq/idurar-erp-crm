@@ -1,195 +1,332 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSF XML Report - Before</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #007bff;
+        }
+        .section-title {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .info-label {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #007bff;
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 5px 8px;
+            border-radius: 4px;
+        }
+        .host-section {
+            border-left-color: #28a745;
+        }
+        .service-section {
+            border-left-color: #ffc107;
+        }
+        .metadata-section {
+            border-left-color: #6f42c1;
+        }
+        .xml-preview {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">🔍 Metasploit XML Report</div>
+            <div class="subtitle">Security Assessment Results - Before Analysis</div>
+        </div>
+        <div class="content">
 
+            <div class="section metadata-section">
+                <div class="section-title">📊 Report Metadata</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Generated Time</div>
+                        <div class="info-value">2025-10-01 08:36:55 UTC</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">User</div>
+                        <div class="info-value">kali</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Project</div>
+                        <div class="info-value">localhost3000</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Product</div>
+                        <div class="info-value">framework</div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="section host-section">
+                <div class="section-title">🖥️ Host Information</div>
+                <div class="info-grid">
 
-  <hr xmlns:fo="http://www.w3.org/1999/XSL/Format" class="print_only"><a name="host_"></a><h2 class="down">
-<a href="javascript:toggle('hostblock_');" class="host_down"><span class="noprint"><small> (click to expand)</small></span></a><span class="print_only">(offline)</span>
-</h2><div id="hostblock_" class="hidden">
-<h3>Address</h3>
-<ul><li>
-            ()
-          </li></ul>
-    1
-    2025-10-01 08:33:32 UTC
-    127.0.0.1
-    
-    
-    localhost
-    alive
-    Unknown
-    
-    
-    
-    
-    2
-    2025-10-01 08:33:33 UTC
-    device
-    
-    
-    
-    
-    0
-    0
-    1
-    0
-    0
-    0
-    
-    
-    
-    
-    
-    
-    
-      
-      1
-      1
-      2025-10-01 08:33:32 UTC
-      <tr>
-<td></td>
-<td></td>
-<td></td>
-<td> </td>
-<td></td>
-<td> </td>
-<td> </td>
-<td> </td>
-</tr>
-      tcp
-      open
-      http
-      2025-10-01 08:33:32 UTC
-      nginx 1.29.1
-      
-    
-    
-    
-    
-    
-  <br><a href="javascript:toggle('metrics_');">
-    Misc Metrics <span class="noprint"><small> (click to expand)</small></span></a><div id="metrics_" class="hidden"><table cellspacing="1">
-<tr class="head">
-<td>Metric</td>
-<td>Value</td>
-</tr>
-<tr>
-<td>Ping Results</td>
-<td></td>
-</tr>
-</table></div>
-</div>
+                    <div class="info-item">
+                        <div class="info-label">ID</div>
+                        <div class="info-value">1</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Address</div>
+                        <div class="info-value">127.0.0.1</div>
+                    </div>
 
-  
-      9
-      2
-      
-      2025-10-01 08:33:20 UTC
-      ui_command
-      2025-10-01 08:33:20 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiHHdvcmtzcGFjZSBsb2NhbGhvc3QzMDAwBjoGRVQ=
-  
+                    <div class="info-item">
+                        <div class="info-label">Name</div>
+                        <div class="info-value">localhost</div>
+                    </div>
 
-  
-      10
-      2
-      
-      2025-10-01 08:33:20 UTC
-      ui_command
-      2025-10-01 08:33:20 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiPXNwb29sIC9ob21lL2thbGkvUHJvamVjdHMvaWR1cmFyLWVycC1jcm0vbXNmLWNvbnNvbGUudHh0BjoGRVQ=
-  
+                    <div class="info-item">
+                        <div class="info-label">State</div>
+                        <div class="info-value">alive</div>
+                    </div>
 
-  
-      11
-      2
-      
-      2025-10-01 08:33:20 UTC
-      ui_command
-      2025-10-01 08:33:20 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiImRiX25tYXAgLXNWIC1wIDMwMDAgMTI3LjAuMC4xBjoGRVQ=
-  
+                    <div class="info-item">
+                        <div class="info-label">OS Name</div>
+                        <div class="info-value">Unknown</div>
+                    </div>
 
-  
-      12
-      2
-      
-      2025-10-01 08:33:33 UTC
-      ui_command
-      2025-10-01 08:33:33 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiCmhvc3RzBjoGRVQ=
-  
+                    <div class="info-item">
+                        <div class="info-label">OS Flavor</div>
+                        <div class="info-value">N/A</div>
+                    </div>
 
-  
-      13
-      2
-      
-      2025-10-01 08:33:33 UTC
-      ui_command
-      2025-10-01 08:33:33 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiDXNlcnZpY2VzBjoGRVQ=
-  
+                    <div class="info-item">
+                        <div class="info-label">Purpose</div>
+                        <div class="info-value">device</div>
+                    </div>
 
-  
-      14
-      2
-      
-      2025-10-01 08:33:33 UTC
-      ui_command
-      2025-10-01 08:33:33 UTC
-      
-      
-      
-      BAh7BjoMY29tbWFuZEkiTmRiX2V4cG9ydCAtZiB4bWwgL2hvbWUva2FsaS9Qcm9qZWN0cy9pZHVyYXItZXJwLWNybS9tc2YtbG9jYWxob3N0MzAwMC54bWwGOgZFVA==
-  
+                    <div class="info-item">
+                        <div class="info-label">Created At</div>
+                        <div class="info-value">2025-10-01 08:33:32 UTC</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Updated At</div>
+                        <div class="info-value">2025-10-01 08:33:33 UTC</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Service Count</div>
+                        <div class="info-value">1</div>
+                    </div>
 
-  
-      1
-      1
-      2025-10-01 08:33:32 UTC
-      <tr>
-<td></td>
-<td></td>
-<td></td>
-<td> </td>
-<td></td>
-<td> </td>
-<td> </td>
-<td> </td>
-</tr>
-      tcp
-      open
-      http
-      2025-10-01 08:33:32 UTC
-      nginx 1.29.1
-  
+                    <div class="info-item">
+                        <div class="info-label">Vuln Count</div>
+                        <div class="info-value">0</div>
+                    </div>
 
+                </div>
+            </div>
 
+            <div class="section service-section">
+                <div class="section-title">⚙️ Services Detected</div>
 
+                <div class="info-grid" style="margin-bottom: 20px; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px;">
 
+                    <div class="info-item">
+                        <div class="info-label">ID</div>
+                        <div class="info-value">1</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Host ID</div>
+                        <div class="info-value">1</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Port</div>
+                        <div class="info-value">3000</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Protocol</div>
+                        <div class="info-value">tcp</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">State</div>
+                        <div class="info-value">open</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Name</div>
+                        <div class="info-value">http</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Info</div>
+                        <div class="info-value">nginx 1.29.1</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Created At</div>
+                        <div class="info-value">2025-10-01 08:33:32 UTC</div>
+                    </div>
 
+                    <div class="info-item">
+                        <div class="info-label">Updated At</div>
+                        <div class="info-value">2025-10-01 08:33:32 UTC</div>
+                    </div>
 
+                </div>
+
+            </div>
+
+            <div class="section">
+                <div class="section-title">📄 Raw XML Data (Preview)</div>
+                <div class="xml-preview">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;MetasploitV5&gt;
+&lt;generated time=&quot;2025-10-01 08:36:55 UTC&quot; user=&quot;kali&quot; project=&quot;localhost3000&quot; product=&quot;framework&quot;/&gt;
+&lt;hosts&gt;
+  &lt;host&gt;
+    &lt;id&gt;1&lt;/id&gt;
+    &lt;created-at&gt;2025-10-01 08:33:32 UTC&lt;/created-at&gt;
+    &lt;address&gt;127.0.0.1&lt;/address&gt;
+    &lt;mac/&gt;
+    &lt;comm&gt;&lt;/comm&gt;
+    &lt;name&gt;localhost&lt;/name&gt;
+    &lt;state&gt;alive&lt;/state&gt;
+    &lt;os-name&gt;Unknown&lt;/os-name&gt;
+    &lt;os-flavor/&gt;
+    &lt;os-sp/&gt;
+    &lt;os-lang/&gt;
+    &lt;arch/&gt;
+    &lt;workspace-id&gt;2&lt;/workspace-id&gt;
+    &lt;updated-at&gt;2025-10-01 08:33:33 UTC&lt;/updated-at&gt;
+    &lt;purpose&gt;device&lt;/purpose&gt;
+    &lt;info/&gt;
+    &lt;comments/&gt;
+    &lt;scope/&gt;
+    &lt;virtual-host/&gt;
+    &lt;note-count&gt;0&lt;/note-count&gt;
+    &lt;vuln-count&gt;0&lt;/vuln-count&gt;
+    &lt;service-count&gt;1&lt;/service-count&gt;
+    &lt;host-detail-count&gt;0&lt;/host-detail-count&gt;
+    &lt;exploit-attempt-count&gt;0&lt;/exploit-attempt-count&gt;
+    &lt;cred-count&gt;0&lt;/cred-count&gt;
+    &lt;detected-arch/&gt;
+    &lt;os-family/&gt;
+    &lt;host_details&gt;
+    &lt;/host_details&gt;
+    &lt;exploit_attempts&gt;
+    &lt;/exploit_attempts&gt;
+    &lt;services&gt;
+      &lt;service&gt;
+      &lt;id&gt;1&lt;/id&gt;
+      &lt;host-id&gt;1&lt;/host-id&gt;
+      &lt;created-at&gt;2025-10-01 08:33:32 UTC&lt;/created-at&gt;
+      &lt;port&gt;3000&lt;/port&gt;
+      &lt;proto&gt;tcp&lt;/proto&gt;
+      &lt;state&gt;open&lt;/state&gt;
+      &lt;name&gt;http&lt;/name&gt;
+      &lt;updated-at&gt;2025-10-01 08:33:32 UTC&lt;/updated-at&gt;
+      &lt;info&gt;nginx 1.29.1&lt;/info&gt;
+      &lt;/service&gt;
+    &lt;/services&gt;
+    &lt;notes&gt;
+    &lt;/notes&gt;
+    &lt;vulns&gt;
+    &lt;/vulns&gt;
+  &lt;/host&gt;
+&lt;/hosts&gt;
+&lt;events&gt;
+  &lt;event&gt;
+      &lt;id&gt;9&lt;/id&gt;
+      &lt;workspace-id&gt;2&lt;/workspace-id&gt;
+      &lt;host-id/&gt;
+      &lt;created-at&gt;2025-10-01 08:33:20 UTC&lt;/created-at&gt;
+      &lt;name&gt;ui_command&lt;/name&gt;
+      &lt;updated-at&gt;2025-10-01 08:33:20 UTC&lt;/updated-at&gt;
+      &lt;critical/&gt;
+      &lt;seen/&gt;
+      &lt;username/&gt;
+      &lt;info&gt;BAh7BjoMY29tbWFuZEkiHHdvcmtzcGFjZSBsb2NhbGhvc3QzMDAwBjoGRVQ=&lt;/info&gt;
+  &lt;/event&gt;
+
+  &lt;event&gt;
+      &lt;id&gt;10&lt;/id&gt;
+      &lt;workspace-id&gt;2&lt;/workspace-id&gt;
+      &lt;host-id/&gt;
+      &lt;created-at&gt;2025-10-01 08:33:20 UTC&lt;/created-at&gt;
+      &lt;name&gt;ui_command&lt;/name&gt;
+      &lt;updated-at&gt;2025-10-01 08:33:20 UTC&lt;/updated-at&gt;
+      &lt;critical/
+... (truncated for display)
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
