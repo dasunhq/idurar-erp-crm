@@ -1,7 +1,10 @@
 const express = require('express');
+const crypto = require('crypto');
+const path = require('path');
 
 const cors = require('cors');
 const compression = require('compression');
+const helmet = require('helmet');
 
 const cookieParser = require('cookie-parser');
 
@@ -31,8 +34,99 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
+// Middleware to generate and attach nonce for CSP
+app.use((req, res, next) => {
+  // Generate a fresh nonce for each request
+  res.locals.nonce = crypto.randomBytes(16).toString('base64');
+  next();
+});
+
+// Security middleware - helmet with nonce-based CSP
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+// Configure Content-Security-Policy with nonces (Option B)
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      // Scripts: self + nonce (no unsafe-inline)
+      scriptSrc: [
+        "'self'",
+        (req, res) => `'nonce-${res.locals.nonce}'`,
+        ...(isDevelopment ? ['http://localhost:3000'] : [])
+      ],
+      // Styles: self + nonce + Google Fonts (no unsafe-inline)
+      styleSrc: [
+        "'self'",
+        (req, res) => `'nonce-${res.locals.nonce}'`,
+        'https://fonts.googleapis.com'
+      ],
+      // Images: self + data: (no external https sources for security)
+      imgSrc: ["'self'", 'data:'],
+      // Fonts: self + Google Fonts
+      fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
+      // Connections: self + localhost for dev API/WS
+      connectSrc: isDevelopment 
+        ? ["'self'", 'http://localhost:3000', 'ws://localhost:3000'] 
+        : ["'self'"],
+      frameSrc: ["'self'"],
+      frameAncestors: ["'none'"], // Prevent clickjacking
+      objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
+      ...(isDevelopment ? {} : { upgradeInsecureRequests: [] }), // Force HTTPS in production only
+    },
+  })
+);
+
+// Apply other Helmet security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // We already configured CSP above
+    xssFilter: true,
+    noSniff: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  })
+);
+
+// Middleware to expose nonce to frontend (for Ant Design inline styles)
+app.use((req, res, next) => {
+  // Add nonce to response headers so frontend can access it
+  res.setHeader('X-CSP-Nonce', res.locals.nonce);
+  next();
+});
+
 // // default options
 // app.use(fileUpload());
+
+// CSP Nonce endpoint for frontend
+app.get('/api/nonce', (req, res) => {
+  res.json({ success: true });
+});
+
+// Sitemap.xml endpoint with CSP headers
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost:3000/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/login</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/forgotPassword</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>`);
+});
 
 // Here our API Routes
 
@@ -41,6 +135,58 @@ app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
+
+// Serve static files from frontend build (for production) or development
+// Note: isDevelopment is already defined above for CSP configuration
+
+if (!isDevelopment) {
+  // In production, serve the built frontend files
+  const frontendBuildPath = path.join(__dirname, '../../frontend/dist');
+  app.use(express.static(frontendBuildPath));
+  
+  // Handle client-side routing - serve index.html for non-API routes
+  app.get('*', (req, res, next) => {
+    // Skip API routes, downloads, and public routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+      return next();
+    }
+    
+    // Serve index.html with CSP headers for all other routes
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+} else {
+  // In development, serve a simple HTML that redirects to the correct development setup
+  app.get('*', (req, res, next) => {
+    // Skip API routes, downloads, and public routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+      return next();
+    }
+    
+    // For development, serve a page that explains the correct setup
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>IDURAR Development Setup</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body>
+        <h1>IDURAR Development Server</h1>
+        <p>This is the backend server running on port 8888.</p>
+        <p>For development with CSP headers, please:</p>
+        <ol>
+          <li>Run the frontend development server: <code>cd frontend && npm run dev</code></li>
+          <li>Access the application at: <a href="http://localhost:3000">http://localhost:3000</a></li>
+        </ol>
+        <p>The frontend will proxy API requests to this backend server.</p>
+        <hr>
+        <p><strong>Note:</strong> CSP headers are configured and active on this server. API endpoints will have proper security headers.</p>
+      </body>
+      </html>
+    `);
+  });
+}
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
