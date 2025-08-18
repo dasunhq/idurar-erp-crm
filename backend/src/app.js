@@ -1,5 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
+const path = require('path');
 
 const cors = require('cors');
 const compression = require('compression');
@@ -101,6 +102,32 @@ app.get('/api/nonce', (req, res) => {
   res.json({ success: true });
 });
 
+// Sitemap.xml endpoint with CSP headers
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost:3000/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/login</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/forgotPassword</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>`);
+});
+
 // Here our API Routes
 
 app.use('/api', coreAuthRouter);
@@ -108,6 +135,58 @@ app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
+
+// Serve static files from frontend build (for production) or development
+// Note: isDevelopment is already defined above for CSP configuration
+
+if (!isDevelopment) {
+  // In production, serve the built frontend files
+  const frontendBuildPath = path.join(__dirname, '../../frontend/dist');
+  app.use(express.static(frontendBuildPath));
+  
+  // Handle client-side routing - serve index.html for non-API routes
+  app.get('*', (req, res, next) => {
+    // Skip API routes, downloads, and public routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+      return next();
+    }
+    
+    // Serve index.html with CSP headers for all other routes
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+} else {
+  // In development, serve a simple HTML that redirects to the correct development setup
+  app.get('*', (req, res, next) => {
+    // Skip API routes, downloads, and public routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+      return next();
+    }
+    
+    // For development, serve a page that explains the correct setup
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>IDURAR Development Setup</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body>
+        <h1>IDURAR Development Server</h1>
+        <p>This is the backend server running on port 8888.</p>
+        <p>For development with CSP headers, please:</p>
+        <ol>
+          <li>Run the frontend development server: <code>cd frontend && npm run dev</code></li>
+          <li>Access the application at: <a href="http://localhost:3000">http://localhost:3000</a></li>
+        </ol>
+        <p>The frontend will proxy API requests to this backend server.</p>
+        <hr>
+        <p><strong>Note:</strong> CSP headers are configured and active on this server. API endpoints will have proper security headers.</p>
+      </body>
+      </html>
+    `);
+  });
+}
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);

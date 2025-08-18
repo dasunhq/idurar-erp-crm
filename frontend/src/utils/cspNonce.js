@@ -8,18 +8,33 @@
 let currentNonce = null;
 
 /**
- * Fetches the current CSP nonce from the backend
+ * Fetches the current CSP nonce from the server
  * @returns {Promise<string|null>} The nonce value or null if unavailable
  */
 export const fetchCSPNonce = async () => {
   try {
-    const response = await fetch('/api/nonce', {
-      method: 'GET',
+    // Try to get nonce from current page first (for Vite dev server)
+    const response = await fetch(window.location.href, {
+      method: 'HEAD',
       credentials: 'include',
     });
     
     if (response.ok) {
       const nonce = response.headers.get('X-CSP-Nonce');
+      if (nonce) {
+        currentNonce = nonce;
+        return nonce;
+      }
+    }
+    
+    // Fallback to backend API endpoint
+    const apiResponse = await fetch('/api/nonce', {
+      method: 'GET',
+      credentials: 'include',
+    });
+    
+    if (apiResponse.ok) {
+      const nonce = apiResponse.headers.get('X-CSP-Nonce');
       if (nonce) {
         currentNonce = nonce;
         return nonce;
@@ -95,4 +110,5 @@ export const applyNonceToStyle = (styleElement) => {
     styleElement.setAttribute('nonce', currentNonce);
   }
 };
+
 
