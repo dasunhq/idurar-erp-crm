@@ -30,7 +30,7 @@ export default ({ mode }) => {
               "default-src 'self'",
               `script-src 'self' 'nonce-${nonce}' ${isDevelopment ? 'http://localhost:3000' : ''}`,
               `style-src 'self' 'nonce-${nonce}' 'unsafe-inline' https://fonts.googleapis.com`,
-              "img-src 'self' data: https:",
+              "img-src 'self' data:",
               "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
               `connect-src 'self' ${isDevelopment ? 'http://localhost:3000 http://localhost:8888 ws://localhost:3000' : ''}`,
               "frame-src 'self'",
