@@ -61,8 +61,8 @@ app.use(
         (req, res) => `'nonce-${res.locals.nonce}'`,
         'https://fonts.googleapis.com'
       ],
-      // Images: self + data: + https: (for flexibility with external images)
-      imgSrc: ["'self'", 'data:', 'https:'],
+      // Images: self + data: (no external https sources for security)
+      imgSrc: ["'self'", 'data:'],
       // Fonts: self + Google Fonts
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
       // Connections: self + localhost for dev API/WS
