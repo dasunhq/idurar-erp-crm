@@ -53,25 +53,27 @@ app.use(
       scriptSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
-        ...(isDevelopment ? ['http://localhost:3000'] : [])
+        ...(isDevelopment ? ['http://localhost:3000'] : []),
       ],
       // Styles: self + nonce + Google Fonts (no unsafe-inline)
       styleSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
-        'https://fonts.googleapis.com'
+        'https://fonts.googleapis.com',
       ],
-      // Images: self + data: + https: (for flexibility with external images)
-      imgSrc: ["'self'", 'data:', 'https:'],
+      // Images: self + data: (no external https sources for security)
+      imgSrc: ["'self'", 'data:'],
       // Fonts: self + Google Fonts
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
       // Connections: self + localhost for dev API/WS
-      connectSrc: isDevelopment 
-        ? ["'self'", 'http://localhost:3000', 'ws://localhost:3000'] 
+      connectSrc: isDevelopment
+        ? ["'self'", 'http://localhost:3000', 'ws://localhost:3000']
         : ["'self'"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"], // Prevent clickjacking
       objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
+      baseUri: ["'self'"], // Restrict base URI to same-origin
+      formAction: ["'self'"], // Restrict form submissions to same-origin
       ...(isDevelopment ? {} : { upgradeInsecureRequests: [] }), // Force HTTPS in production only
     },
   })
@@ -83,7 +85,13 @@ app.use(
     contentSecurityPolicy: false, // We already configured CSP above
     xssFilter: true,
     noSniff: true,
+    hsts: {
+      maxAge: 31536000, // 1 year in seconds
+      includeSubDomains: true,
+      preload: true,
+    },
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    frameguard: { action: 'deny' }, // X-Frame-Options: DENY
   })
 );
 
@@ -143,14 +151,18 @@ if (!isDevelopment) {
   // In production, serve the built frontend files
   const frontendBuildPath = path.join(__dirname, '../../frontend/dist');
   app.use(express.static(frontendBuildPath));
-  
+
   // Handle client-side routing - serve index.html for non-API routes
   app.get('*', (req, res, next) => {
     // Skip API routes, downloads, and public routes
-    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/download') ||
+      req.path.startsWith('/public')
+    ) {
       return next();
     }
-    
+
     // Serve index.html with CSP headers for all other routes
     res.sendFile(path.join(frontendBuildPath, 'index.html'));
   });
@@ -158,10 +170,14 @@ if (!isDevelopment) {
   // In development, serve a simple HTML that redirects to the correct development setup
   app.get('*', (req, res, next) => {
     // Skip API routes, downloads, and public routes
-    if (req.path.startsWith('/api') || req.path.startsWith('/download') || req.path.startsWith('/public')) {
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/download') ||
+      req.path.startsWith('/public')
+    ) {
       return next();
     }
-    
+
     // For development, serve a page that explains the correct setup
     res.send(`
       <!DOCTYPE html>
