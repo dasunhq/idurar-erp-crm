@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Date to set for commits (August 18, 2025)
-TARGET_DATE="Mon Aug 18 19:15:00 2025 +0530"
+# Date to set for commits (August 20, 2025)
+TARGET_DATE="Wed Aug 20 19:15:00 2025 +0530"
 
 echo "Step 1: Fixing commit date for commit 87569a2ca0b48fd747b8ddf7b119426a6406dce1"
 git filter-branch -f --env-filter '
