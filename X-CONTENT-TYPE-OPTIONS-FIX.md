@@ -1,9 +1,11 @@
 # X-Content-Type-Options Header Implementation
 
 ## Overview
+
 This document describes the implementation of the X-Content-Type-Options security header to address the MIME type sniffing vulnerability (CWE-693, OWASP A05:2021).
 
 ## Vulnerability Description
+
 The X-Content-Type-Options header was missing, allowing older versions of Internet Explorer and Chrome to perform MIME-sniffing on response bodies. This could cause responses to be interpreted as different content types than declared, potentially leading to security vulnerabilities.
 
 ## Solution Implemented
@@ -11,11 +13,13 @@ The X-Content-Type-Options header was missing, allowing older versions of Intern
 ### 1. Nginx Configuration Enhancement
 
 #### `nginx-http-headers.conf`
+
 - Added comprehensive security headers including `X-Content-Type-Options: nosniff`
 - Headers are applied to all responses using the `always` directive
 - Integrated with existing CSP configuration
 
 #### `nginx.conf`
+
 - Added error page handling for HTTP status codes: 400, 401, 403, 404, 500, 502, 503, 504
 - Ensured security headers are applied to all error responses
 - Created custom error page with proper security headers
@@ -23,6 +27,7 @@ The X-Content-Type-Options header was missing, allowing older versions of Intern
 ### 2. Apache Configuration Enhancement
 
 #### `apache-security-headers.conf`
+
 - Added `X-Content-Type-Options: nosniff` header using `mod_headers`
 - Included comprehensive security headers for static content and error pages
 - Headers are set with `always` to ensure application to all response types
@@ -30,6 +35,7 @@ The X-Content-Type-Options header was missing, allowing older versions of Intern
 ### 3. Express Backend Configuration
 
 #### Existing Helmet Middleware
+
 - Verified that `noSniff: true` option is already enabled in `backend/src/app.js`
 - Helmet middleware automatically adds `X-Content-Type-Options: nosniff` to all responses
 - Integrated with existing CSP and other security configurations
@@ -37,6 +43,7 @@ The X-Content-Type-Options header was missing, allowing older versions of Intern
 ### 4. Frontend Security Middleware
 
 #### `frontend/security-middleware.js`
+
 - Verified existing implementation includes `X-Content-Type-Options: nosniff`
 - Used for development server security headers
 
@@ -61,9 +68,11 @@ The following security headers are now consistently applied across all server co
 ## Testing
 
 ### Verification Script
+
 Run `./test-x-content-type-options.sh` to verify the implementation across all configuration files.
 
 ### Manual Testing
+
 1. Start the application using Docker or local development setup
 2. Check response headers using browser developer tools or curl:
    ```bash
@@ -87,6 +96,7 @@ This implementation ensures the X-Content-Type-Options header is applied to:
 ## Compliance
 
 This implementation addresses:
+
 - **CWE-693**: Protection Mechanism Failure
 - **OWASP 2021 A05**: Security Misconfiguration
 - **OWASP 2017 A06**: Security Misconfiguration
