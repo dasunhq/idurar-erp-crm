@@ -3,9 +3,21 @@ const mongoose = require('mongoose');
 const read = async (userModel, req, res) => {
   const User = mongoose.model(userModel);
 
-  // Find document by id
+  // Validate that user ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid user ID format',
+    });
+  }
+  
+  // Create a validated ObjectId from the ID parameter
+  const objectId = new mongoose.Types.ObjectId(req.params.id);
+  
+  // Find document by id using the validated ObjectId
   const tmpResult = await User.findOne({
-    _id: req.params.id,
+    _id: objectId,
     removed: false,
   }).exec();
   // If no results found, return document not found
