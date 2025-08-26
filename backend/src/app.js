@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const cookieParser = require('cookie-parser');
 
@@ -31,6 +32,14 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Sanitize data against NoSQL injection attacks
+app.use(mongoSanitize({
+  replaceWith: '_',
+  onSanitize: ({ req, key }) => {
+    console.warn(`This request[${key}] is sanitized`, req);
+  }
+}));
 
 app.use(compression());
 
