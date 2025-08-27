@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import { Switch, Tag } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { countryList } from '@/utils/countryList';
-import { generate as uniqueId } from 'shortid';
+import { v4 as uuidv4 } from 'uuid';
 import color from '@/utils/color';
+import { webcrypto } from 'crypto';
 
 export const dataForRead = ({ fields, translate }) => {
   let columns = [];
@@ -166,7 +167,7 @@ export function dataForTable({ fields, translate, moneyFormatter, dateFormat }) 
         dataIndex: keyIndex,
         render: (_, record) => {
           return record[key].map((x) => (
-            <Tag bordered={false} key={`${uniqueId()}`} color={field.colors[x]}>
+            <Tag bordered={false} key={`${uuidv4()}`} color={field.colors[x]}>
               {x}
             </Tag>
           ));
@@ -220,8 +221,10 @@ function getRandomColor() {
     'purple',
   ];
 
-  // Generate a random index between 0 and the length of the colors array
-  const randomIndex = Math.floor(Math.random() * colors.length);
+  // Generate a cryptographically secure random index between 0 and the length of the colors array
+  let array = new Uint32Array(1);
+  webcrypto.getRandomValues(array);
+  const randomIndex = array[0] % colors.length;
 
   // Return the color at the randomly generated index
   return colors[randomIndex];
