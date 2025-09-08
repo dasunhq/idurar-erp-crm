@@ -7,12 +7,18 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
 
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
 const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
 const adminAuth = require('./controllers/coreControllers/adminAuth');
+
+// OAuth Strategies
+const googleStrategy = require('./middlewares/authStrategies/googleStrategy');
+const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy');
 
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
@@ -32,7 +38,44 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Session configuration for OAuth
+app.use(
+  session({
+    secret: process.env.JWT_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
 app.use(compression());
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport serialization (required for session support)
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const mongoose = require('mongoose');
+    const Admin = mongoose.model('Admin');
+    const user = await Admin.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
+// Configure OAuth strategies (must be before other routes)
+googleStrategy(app);
+facebookStrategy(app);
 
 // Middleware to generate and attach nonce for CSP
 app.use((req, res, next) => {
@@ -101,7 +144,6 @@ app.use((req, res, next) => {
   res.setHeader('X-CSP-Nonce', res.locals.nonce);
   next();
 });
-
 // // default options
 // app.use(fileUpload());
 
