@@ -5,6 +5,11 @@ export function setupSecurityHeaders() {
   return (req, res, next) => {
     // Generate a nonce for inline scripts/styles
     const nonce = crypto.randomBytes(16).toString('base64');
+    
+    // Ensure res.locals exists before setting properties
+    if (!res.locals) {
+      res.locals = {};
+    }
     res.locals.nonce = nonce;
 
     // Content Security Policy with development-friendly but secure settings
