@@ -27,11 +27,51 @@ const DoSingleStorage = ({
   uploadFieldName = 'file',
   fieldName = 'file',
 }) => {
+  // Configure multer for secure file handling
+  const storage = multer.memoryStorage();
+
+  const fileFilter = (req, file, cb) => {
+    // Validate file type using existing middleware
+    if (!fileFilterMiddleware({ type: fileType, mimetype: file.mimetype })) {
+      return cb(new Error('Uploaded file type not supported'), false);
+    }
+
+    // Additional security checks
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      return cb(new Error('File extension not allowed'), false);
+    }
+
+    cb(null, true);
+  };
+
+  const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+      files: 1, // Only allow single file upload to prevent multiple files with same name
+    },
+  }).single(uploadFieldName);
+
   return async function (req, res, next) {
-    if (!req.files || Object.keys(req.files)?.length === 0 || !req.files?.file) {
-      req.body[fieldName] = null;
-      next();
-    } else {
+    upload(req, res, async function (err) {
+      if (err) {
+        return res.status(403).json({
+          success: false,
+          result: null,
+          controller: 'DoSingleStorage.js',
+          message: err.message || 'Error on uploading file',
+        });
+      }
+
+      if (!req.file) {
+        req.body[fieldName] = null;
+        return next();
+      }
+
       const s3Client = new S3Client(clientParams);
 
       try {
