@@ -16,15 +16,20 @@ export default ({ mode }) => {
 
   const config = {
     plugins: [
-      react(),
-      // Custom plugin to add CSP headers in development
+      // Configure React plugin with proper settings
+      react({
+        // Ensure fast refresh works correctly
+        fastRefresh: true,
+        // Avoid preamble detection issues
+        include: '**/*.{jsx,tsx,js,ts}',
+      }),
+      // Apply our security headers
       {
         name: 'security-headers',
         configureServer(server) {
-          // Apply our security middleware
           server.middlewares.use(setupSecurityHeaders());
         },
-      },
+      }
     ],
     resolve: {
       base: '/',
@@ -34,6 +39,12 @@ export default ({ mode }) => {
     },
     server: {
       port: 3000,
+      hmr: {
+        // Force the HMR websocket to use the same hostname
+        // This helps with CSP restrictions
+        host: 'localhost',
+        protocol: 'ws',
+      },
       proxy: {
         '/api': {
           target: proxy_url,
