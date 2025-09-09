@@ -27,9 +27,26 @@ const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
 
+// Remove X-Powered-By header for security
+app.disable('x-powered-by');
+
+// Configure CORS with restrictive origins for security
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [process.env.FRONTEND_URL || 'https://your-domain.com']
+  : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'), false);
+      }
+    },
     credentials: true,
   })
 );
@@ -92,7 +109,7 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      // Scripts: self + nonce (no unsafe-inline)
+      // Scripts: self + nonce (no unsafe-inline, no unsafe-eval for better security)
       scriptSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
