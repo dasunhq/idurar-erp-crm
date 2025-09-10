@@ -13,7 +13,7 @@ let currentNonce = null;
  */
 export const fetchCSPNonce = async () => {
   try {
-    // Try to get nonce from current page first (for Vite dev server)
+    // Try to get nonce via current page first (for Vite dev server)
     const response = await fetch(window.location.href, {
       method: 'HEAD',
       credentials: 'include',

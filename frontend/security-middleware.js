@@ -12,16 +12,16 @@ export function setupSecurityHeaders() {
     }
     res.locals.nonce = nonce;
 
-    // Content Security Policy with environment-specific security settings
+    // Content Security Policy with enhanced security settings
     const isDevelopment = process.env.NODE_ENV !== 'production';
     const cspDirectives = [
       // Allow everything from same origin
       "default-src 'self'",
 
-      // Scripts: In development, Vite requires unsafe-eval for HMR, but we minimize other risks
-      // In production, use strict nonce-based CSP
-      isDevelopment 
-        ? `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' http://localhost:3000`
+      // Scripts: Use strict nonce-based CSP for better security
+      // Note: Removed 'unsafe-eval' for improved security posture
+      isDevelopment
+        ? `script-src 'self' 'nonce-${nonce}' http://localhost:3000`
         : `script-src 'self' 'nonce-${nonce}'`,
 
       // Styles: Allow self, nonce-based inline styles, and Google Fonts
@@ -70,24 +70,25 @@ export function setupSecurityHeaders() {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-    
+
     // Add Strict Transport Security in production
     if (!isDevelopment) {
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
     }
-    
+
     // Restrict CORS - more secure than wildcard
-    const allowedOrigins = isDevelopment 
+    const allowedOrigins = isDevelopment
       ? ['http://localhost:3000', 'http://127.0.0.1:3000']
       : [process.env.FRONTEND_URL || 'https://your-domain.com'];
-    
+
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
       res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     }
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    // Do not set any CORS headers for non-allowed origins
 
     // Remove server information leak
     res.removeHeader('X-Powered-By');
