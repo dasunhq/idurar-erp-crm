@@ -39,6 +39,10 @@ export default ({ mode }) => {
     },
     server: {
       port: 3000,
+      cors: {
+        origin: isDevelopment ? ['http://localhost:3000', 'http://127.0.0.1:3000'] : false,
+        credentials: true
+      },
       hmr: {
         // Force the HMR websocket to use the same hostname
         // This helps with CSP restrictions

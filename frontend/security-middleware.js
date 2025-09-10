@@ -71,9 +71,12 @@ export function setupSecurityHeaders() {
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-    // Add Strict Transport Security in production
+    // Add Strict Transport Security (enabled in all environments for security testing)
     if (!isDevelopment) {
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    } else {
+      // Set HSTS in development for security testing (shorter max-age)
+      res.setHeader('Strict-Transport-Security', 'max-age=3600; includeSubDomains');
     }
 
     // Restrict CORS - more secure than wildcard
@@ -87,12 +90,21 @@ export function setupSecurityHeaders() {
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    } else {
+      // Explicitly deny CORS for non-allowed origins
+      res.setHeader('Access-Control-Allow-Origin', 'null');
     }
-    // Do not set any CORS headers for non-allowed origins
 
-    // Remove server information leak
+    // Remove server information leak and set secure cache headers
     res.removeHeader('X-Powered-By');
     res.removeHeader('Server');
+    
+    // Prevent caching of sensitive pages
+    if (req.url === '/' || req.url.includes('admin') || req.url.includes('login')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
 
     // Expose nonce for frontend use
     res.setHeader('X-CSP-Nonce', nonce);

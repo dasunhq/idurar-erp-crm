@@ -8,7 +8,7 @@
 let currentNonce = null;
 
 /**
- * Fetches the current CSP nonce from the server
+ * Retrieves the current CSP nonce value for the application
  * @returns {Promise<string|null>} The nonce value or null if unavailable
  */
 export const fetchCSPNonce = async () => {
