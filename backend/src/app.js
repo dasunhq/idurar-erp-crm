@@ -27,9 +27,27 @@ const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
 
+// Remove X-Powered-By header for security
+app.disable('x-powered-by');
+
+// Configure CORS with restrictive origins for security
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL || 'https://your-domain.com']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'), false);
+      }
+    },
     credentials: true,
   })
 );
@@ -87,18 +105,18 @@ app.use((req, res, next) => {
 // Security middleware - helmet with nonce-based CSP
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-// Configure Content-Security-Policy with nonces (Option B)
+// Configure Content-Security-Policy with enhanced security (no unsafe directives)
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      // Scripts: self + nonce (no unsafe-inline)
+      // Scripts: self + nonce (explicitly excluding unsafe-inline and unsafe-eval)
       scriptSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
         ...(isDevelopment ? ['http://localhost:3000'] : []),
       ],
-      // Styles: self + nonce + Google Fonts (no unsafe-inline)
+      // Styles: self + nonce + Google Fonts (avoiding unsafe-inline)
       styleSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
@@ -110,13 +128,16 @@ app.use(
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
       // Connections: self + localhost for dev API/WS
       connectSrc: isDevelopment
-        ? ["'self'", 'http://localhost:3000', 'ws://localhost:3000']
+        ? ["'self'", 'http://localhost:3000', 'http://localhost:8888', 'ws://localhost:3000', 'ws://localhost:8888']
         : ["'self'"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"], // Prevent clickjacking
       objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
       baseUri: ["'self'"], // Restrict base URI to same-origin
       formAction: ["'self'"], // Restrict form submissions to same-origin
+      mediaSrc: ["'self'"], // Media sources: Only self
+      workerSrc: ["'self'"], // Worker sources: Only self
+      manifestSrc: ["'self'"], // Manifest sources: Only self
       ...(isDevelopment ? {} : { upgradeInsecureRequests: [] }), // Force HTTPS in production only
     },
   })
