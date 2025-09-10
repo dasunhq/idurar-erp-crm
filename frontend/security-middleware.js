@@ -89,7 +89,10 @@ export function setupSecurityHeaders() {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+      res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization, X-Requested-With'
+      );
     } else {
       // Explicitly deny CORS for non-allowed origins
       res.setHeader('Access-Control-Allow-Origin', 'null');
@@ -98,7 +101,7 @@ export function setupSecurityHeaders() {
     // Remove server information leak and set secure cache headers
     res.removeHeader('X-Powered-By');
     res.removeHeader('Server');
-    
+
     // Prevent caching of sensitive pages
     if (req.url === '/' || req.url.includes('admin') || req.url.includes('login')) {
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -108,6 +111,49 @@ export function setupSecurityHeaders() {
 
     // Expose nonce for frontend use
     res.setHeader('X-CSP-Nonce', nonce);
+
+    // Dev-only: redact raw Unix timestamps in Vite deps to reduce info disclosure
+    const isViteDepJs =
+      process.env.NODE_ENV !== 'production' &&
+      (req.url.includes('/node_modules/.vite/deps/') || req.url.includes('/@fs/')) &&
+      (req.url.endsWith('.js') || req.url.includes('.js?'));
+
+    if (!isViteDepJs) {
+      next();
+      return;
+    }
+
+    const originalWrite = res.write;
+    const originalEnd = res.end;
+    const chunks = [];
+
+    res.write = function (chunk, encoding, cb) {
+      try {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding));
+        if (typeof cb === 'function') cb();
+        return true;
+      } catch (e) {
+        return originalWrite.call(res, chunk, encoding, cb);
+      }
+    };
+
+    res.end = function (chunk, encoding, cb) {
+      if (chunk) {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding));
+      }
+
+      try {
+        let body = Buffer.concat(chunks).toString('utf8');
+        // Replace 10-digit Unix timestamps with a neutral value
+        body = body.replace(/\b1\d{9}\b/g, '0');
+
+        const buf = Buffer.from(body, 'utf8');
+        res.setHeader('Content-Length', Buffer.byteLength(buf));
+        return originalEnd.call(res, buf, 'utf8', cb);
+      } catch (e) {
+        return originalEnd.call(res, chunk, encoding, cb);
+      }
+    };
 
     next();
   };
