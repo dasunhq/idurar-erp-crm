@@ -26,7 +26,13 @@ export function setupSecurityHeaders() {
       return;
     }
   
-   
+    // Handle sitemap.xml gracefully (ZAP Id 10)
+    if (req.url === '/sitemap.xml') {
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('404 Not Found');
+      return;
+    }
    
 
     // Generate a nonce for inline scripts/styles
