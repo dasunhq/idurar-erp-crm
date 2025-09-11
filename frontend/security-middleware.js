@@ -3,6 +3,32 @@ import crypto from 'crypto';
 // Security middleware for development server
 export function setupSecurityHeaders() {
   return (req, res, next) => {
+    // Block access to hidden files and version control directories (ZAP ID 07-09)
+    const blockedPaths = [
+      /\/\._darcs/i,
+      /\/\.bzr/i,
+      /\/\.hg/i,
+      /\/BitKeeper/i,
+      /\/\.git/i,
+      /\/\.svn/i,
+      /\/CVS/i,
+      /\/\.DS_Store/i,
+      /\/\.env/i,
+      /\/\.htaccess/i,
+      /\/\.htpasswd/i
+    ];
+
+    const isBlockedPath = blockedPaths.some(pattern => pattern.test(req.url));
+    if (isBlockedPath) {
+      res.statusCode = 403;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('403 Forbidden - Access to this resource is not allowed');
+      return;
+    }
+  
+   
+   
+
     // Generate a nonce for inline scripts/styles
     const nonce = crypto.randomBytes(16).toString('base64');
 
