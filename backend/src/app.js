@@ -27,7 +27,8 @@ const erpApiRouter = require('./routes/appRoutes/appApi');
 const {
   apiLimiter,
   authLimiter,
-  passwordResetLimiter
+  passwordResetLimiter,
+  uploadLimiter
 } = require('./middlewares/rateLimiter');
 
 // Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
@@ -183,7 +184,7 @@ app.use('/api/login', authLimiter); // Stricter limit for login (5 req/15min)
 app.use('/api/forgetpassword', passwordResetLimiter); // Stricter limit for password reset
 app.use('/api/resetpassword', passwordResetLimiter); // Stricter limit for password reset
 app.use('/api', apiLimiter); 
-app.use('/download'); 
+app.use('/download', uploadLimiter); // Rate limit file downloads (20 req/15min)
 app.use('/public'); 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {

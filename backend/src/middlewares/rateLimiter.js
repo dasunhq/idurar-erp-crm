@@ -51,8 +51,24 @@ const passwordResetLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+/**
+ * File upload rate limiter
+ * Prevents DOS attacks via large file uploads
+ */
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each IP to 20 file uploads per 15 minutes
+  message: {
+    success: false,
+    result: null,
+    message: 'Too many file uploads, please try again later.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 module.exports = {
   apiLimiter,
   authLimiter,
   passwordResetLimiter,
+  uploadLimiter,
 };
