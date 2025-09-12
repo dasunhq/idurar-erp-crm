@@ -27,8 +27,7 @@ const erpApiRouter = require('./routes/appRoutes/appApi');
 const {
   apiLimiter,
   authLimiter,
-  publicLimiter,
-  uploadLimiter,
+  passwordResetLimiter
 } = require('./middlewares/rateLimiter');
 
 // Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
@@ -180,9 +179,9 @@ app.use((req, res, next) => {
 
 // Apply DOS protection rate limiters before routes
 // More specific routes first, then general rate limiter
-app.use('/api/login', authLimiter);
-app.use('/api/forgetpassword'); 
-app.use('/api/resetpassword'); 
+app.use('/api/login', authLimiter); // Stricter limit for login (5 req/15min)
+app.use('/api/forgetpassword', passwordResetLimiter); // Stricter limit for password reset
+app.use('/api/resetpassword', passwordResetLimiter); // Stricter limit for password reset
 app.use('/api', apiLimiter); 
 app.use('/download'); 
 app.use('/public'); 

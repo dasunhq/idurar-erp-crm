@@ -35,8 +35,24 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+/**
+ * Password reset rate limiter
+ * Prevents abuse of password reset functionality
+ */
+const passwordResetLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // Limit each IP to 3 password reset requests per hour
+  message: {
+    success: false,
+    result: null,
+    message: 'Too many password reset attempts, please try again after an hour.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 module.exports = {
   apiLimiter,
   authLimiter,
+  passwordResetLimiter,
 };
