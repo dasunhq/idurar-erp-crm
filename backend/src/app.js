@@ -180,7 +180,7 @@ app.use((req, res, next) => {
 
 // Apply DOS protection rate limiters before routes
 // More specific routes first, then general rate limiter
-app.use('/api/login');
+app.use('/api/login', authLimiter);
 app.use('/api/forgetpassword'); 
 app.use('/api/resetpassword'); 
 app.use('/api', apiLimiter); 
