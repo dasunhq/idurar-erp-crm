@@ -28,7 +28,8 @@ const {
   apiLimiter,
   authLimiter,
   passwordResetLimiter,
-  uploadLimiter
+  uploadLimiter,
+  publicLimiter
 } = require('./middlewares/rateLimiter');
 
 // Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
@@ -185,7 +186,7 @@ app.use('/api/forgetpassword', passwordResetLimiter); // Stricter limit for pass
 app.use('/api/resetpassword', passwordResetLimiter); // Stricter limit for password reset
 app.use('/api', apiLimiter); 
 app.use('/download', uploadLimiter); // Rate limit file downloads (20 req/15min)
-app.use('/public'); 
+app.use('/public', publicLimiter); // More permissive for public routes (200 req/15min) 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
   res.json({ success: true });

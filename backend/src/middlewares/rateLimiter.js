@@ -66,9 +66,40 @@ const uploadLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+const searchLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // Limit each IP to 30 search requests per minute
+  message: {
+    success: false,
+    result: null,
+    message: 'Too many search requests, please slow down.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/**
+ * Public route rate limiter (more permissive)
+ * Applies to public endpoints that don't require authentication
+ */
+const publicLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Limit each IP to 200 requests per windowMs
+  message: {
+    success: false,
+    result: null,
+    message: 'Too many requests, please try again later.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 module.exports = {
   apiLimiter,
   authLimiter,
   passwordResetLimiter,
   uploadLimiter,
+  searchLimiter,
+  publicLimiter,
 };
