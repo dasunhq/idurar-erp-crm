@@ -23,6 +23,14 @@ const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy'
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
 
+// Import rate limiters for DOS protection
+const {
+  apiLimiter,
+  authLimiter,
+  publicLimiter,
+  uploadLimiter,
+} = require('./middlewares/rateLimiter');
+
 // Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
 // Using multer instead for secure file upload handling
 // create our Express app
@@ -170,6 +178,14 @@ app.use((req, res, next) => {
 // Removed express-fileupload due to Arbitrary File Upload vulnerabilities
 // File uploads now handled securely by multer in specific routes with validation
 
+// Apply DOS protection rate limiters before routes
+// More specific routes first, then general rate limiter
+app.use('/api/login');
+app.use('/api/forgetpassword'); 
+app.use('/api/resetpassword'); 
+app.use('/api', apiLimiter); 
+app.use('/download'); 
+app.use('/public'); 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
   res.json({ success: true });
