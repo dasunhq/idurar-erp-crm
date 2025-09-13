@@ -2,7 +2,7 @@
 db = db.getSiblingDB("idurar_db");
 
 // Create user for the application
-// Note: Password should be set via environment variable MONGO_INITDB_ROOT_PASSWORD
+// Password should be set via environment variable MONGO_INITDB_ROOT_PASSWORD
 const adminPassword = process.env.MONGO_ADMIN_PASSWORD || (() => {
   throw new Error("MONGO_ADMIN_PASSWORD environment variable is required");
 })();
