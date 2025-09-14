@@ -6,6 +6,9 @@ const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
 
+// SSRF Protection
+const { validateDoSpacesUrl } = require('./middlewares/ssrfProtection');
+
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
@@ -27,6 +30,21 @@ const erpApiRouter = require('./routes/appRoutes/appApi');
 // Using multer instead for secure file upload handling
 // create our Express app
 const app = express();
+
+// Validate DO_SPACES_URL to prevent SSRF attacks
+if (process.env.DO_SPACES_URL) {
+  try {
+    validateDoSpacesUrl(process.env.DO_SPACES_URL);
+    console.log('✓ DO_SPACES_URL validation passed');
+  } catch (error) {
+    console.error('✗ DO_SPACES_URL validation failed:', error.message);
+    // Don't exit in development, but warn
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Exiting due to invalid DO_SPACES_URL in production');
+      process.exit(1);
+    }
+  }
+}
 
 // Remove X-Powered-By header for security
 app.disable('x-powered-by');
