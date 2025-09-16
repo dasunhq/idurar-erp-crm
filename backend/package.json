@@ -23,14 +23,12 @@
     "currency.js": "2.0.4",
     "dotenv": "16.3.1",
     "express": "^4.21.2",
-    "express-fileupload": "^1.4.3",
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.18.2",
     "form-data": "^4.0.4",
     "glob": "10.3.10",
     "handlebars": "^4.7.8",
     "helmet": "^8.1.0",
-    "html-pdf": "^3.0.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
@@ -47,6 +45,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.2",
     "pug-code-gen": "^3.0.3",
+    "puppeteer": "^24.23.0",
     "resend": "^2.0.0",
     "send": "^0.19.0",
     "serve-static": "^1.16.0",
@@ -73,6 +72,6 @@
   },
   "homepage": "https://github.com/idurar/idurar-erp-crm/#readme",
   "securityNotes": {
-    "express-fileupload": "SECURITY WARNING: This package has Arbitrary File Upload vulnerabilities with no fixed version available. Consider replacing with a more secure file upload solution like multer with proper validation."
+    "fixed-vulnerabilities": "2025-10-04: Fixed Snyk vulnerabilities - removed html-pdf (critical form-data vulnerability), removed express-fileupload (arbitrary file upload), added puppeteer for secure PDF generation. See SECURITY-FIXES-SNYK-2025-10-04.md for details."
   }
 }

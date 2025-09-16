@@ -23,7 +23,8 @@ const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy'
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
 
-const fileUpload = require('express-fileupload');
+// Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
+// Using multer instead for secure file upload handling
 // create our Express app
 const app = express();
 
@@ -165,8 +166,9 @@ app.use((req, res, next) => {
   res.setHeader('X-CSP-Nonce', res.locals.nonce);
   next();
 });
-// // default options
-// app.use(fileUpload());
+
+// Removed express-fileupload due to Arbitrary File Upload vulnerabilities
+// File uploads now handled securely by multer in specific routes with validation
 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
