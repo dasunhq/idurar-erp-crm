@@ -20,8 +20,14 @@ export default ({ mode }) => {
       react({
         // Ensure fast refresh works correctly
         fastRefresh: true,
-        // Avoid preamble detection issues
+        // Avoid preamble detection issues by being more explicit
         include: '**/*.{jsx,tsx,js,ts}',
+        // Add babel configuration to help with preamble detection
+        babel: {
+          plugins: [
+            // Add any necessary babel plugins here
+          ],
+        },
       }),
       // Apply our security headers
       {
