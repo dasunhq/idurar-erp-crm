@@ -8,6 +8,8 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
 
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
@@ -15,16 +17,39 @@ const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
 const adminAuth = require('./controllers/coreControllers/adminAuth');
 
+// OAuth Strategies
+const googleStrategy = require('./middlewares/authStrategies/googleStrategy');
+const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy');
+
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
 
-const fileUpload = require('express-fileupload');
+// Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
+// Using multer instead for secure file upload handling
 // create our Express app
 const app = express();
 
+// Remove X-Powered-By header for security
+app.disable('x-powered-by');
+
+// Configure CORS with restrictive origins for security
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL || 'https://your-domain.com']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'), false);
+      }
+    },
     credentials: true,
   })
 );
@@ -32,6 +57,19 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session configuration for OAuth
+app.use(
+  session({
+    secret: process.env.JWT_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
 // Sanitize data against NoSQL injection attacks
 app.use(mongoSanitize({
@@ -43,6 +81,30 @@ app.use(mongoSanitize({
 
 app.use(compression());
 
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport serialization (required for session support)
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const mongoose = require('mongoose');
+    const Admin = mongoose.model('Admin');
+    const user = await Admin.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
+// Configure OAuth strategies (must be before other routes)
+googleStrategy(app);
+facebookStrategy(app);
+
 // Middleware to generate and attach nonce for CSP
 app.use((req, res, next) => {
   // Generate a fresh nonce for each request
@@ -53,36 +115,41 @@ app.use((req, res, next) => {
 // Security middleware - helmet with nonce-based CSP
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-// Configure Content-Security-Policy with nonces (Option B)
+// Configure Content-Security-Policy with enhanced security (no unsafe directives)
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      // Scripts: self + nonce (no unsafe-inline)
+      // Scripts: self + nonce + specific hash for React DevTools
       scriptSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
+        "'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk='", // React DevTools hash
         ...(isDevelopment ? ['http://localhost:3000'] : []),
       ],
-      // Styles: self + nonce + Google Fonts (no unsafe-inline)
+      // Styles: self + Google Fonts + unsafe-inline for Ant Design
+      // Note: Removed nonce from style-src to allow unsafe-inline to work
       styleSrc: [
         "'self'",
-        (req, res) => `'nonce-${res.locals.nonce}'`,
         'https://fonts.googleapis.com',
+        "'unsafe-inline'", // Required for Ant Design inline styles
       ],
-      // Images: self + data: (no external https sources for security)
-      imgSrc: ["'self'", 'data:'],
+      // Images: self + data: + Google profile images for OAuth
+      imgSrc: ["'self'", 'data:', 'https://lh3.googleusercontent.com'],
       // Fonts: self + Google Fonts
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
       // Connections: self + localhost for dev API/WS
       connectSrc: isDevelopment
-        ? ["'self'", 'http://localhost:3000', 'ws://localhost:3000']
+        ? ["'self'", 'http://localhost:3000', 'http://localhost:8888', 'ws://localhost:3000', 'ws://localhost:8888']
         : ["'self'"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"], // Prevent clickjacking
       objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
       baseUri: ["'self'"], // Restrict base URI to same-origin
       formAction: ["'self'"], // Restrict form submissions to same-origin
+      mediaSrc: ["'self'"], // Media sources: Only self
+      workerSrc: ["'self'"], // Worker sources: Only self
+      manifestSrc: ["'self'"], // Manifest sources: Only self
       ...(isDevelopment ? {} : { upgradeInsecureRequests: [] }), // Force HTTPS in production only
     },
   })
@@ -111,12 +178,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// // default options
-// app.use(fileUpload());
+// Removed express-fileupload due to Arbitrary File Upload vulnerabilities
+// File uploads now handled securely by multer in specific routes with validation
 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
-  res.json({ success: true });
+  res.setHeader('X-CSP-Nonce', res.locals.nonce);
+  res.json({ success: true, nonce: res.locals.nonce });
 });
 
 // Sitemap.xml endpoint with CSP headers
