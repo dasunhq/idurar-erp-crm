@@ -53,17 +53,15 @@ export function setupSecurityHeaders() {
       // Scripts: Use strict nonce-based CSP for better security
       // Note: Removed 'unsafe-eval' for improved security posture
       isDevelopment
-        ? `script-src 'self' 'nonce-${nonce}' http://localhost:3000`
-        : `script-src 'self' 'nonce-${nonce}'`,
+        ? `script-src 'self' 'nonce-${nonce}' 'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk=' http://localhost:3000`
+        : `script-src 'self' 'nonce-${nonce}' 'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk='`,
 
-      // Styles: Allow self, nonce-based inline styles, and Google Fonts
-      // Keep minimal unsafe-inline only for development compatibility with Ant Design
-      isDevelopment
-        ? `style-src 'self' 'nonce-${nonce}' 'unsafe-inline' https://fonts.googleapis.com`
-        : `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
+      // Styles: Allow self, unsafe-inline, and Google Fonts
+      // Note: Removed nonce from style-src to allow unsafe-inline to work
+      `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
 
-      // Images: Allow self and data URLs only
-      "img-src 'self' data:",
+      // Images: Allow self, data URLs, and Google profile images
+      "img-src 'self' data: https://lh3.googleusercontent.com",
 
       // Fonts: Allow self and specific Google Fonts domains only
       "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",

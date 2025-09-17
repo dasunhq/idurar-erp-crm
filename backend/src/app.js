@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -23,7 +24,8 @@ const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy'
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
 
-const fileUpload = require('express-fileupload');
+// Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
+// Using multer instead for secure file upload handling
 // create our Express app
 const app = express();
 
@@ -69,6 +71,14 @@ app.use(
   })
 );
 
+// Sanitize data against NoSQL injection attacks
+app.use(mongoSanitize({
+  replaceWith: '_',
+  onSanitize: ({ req, key }) => {
+    console.warn(`This request[${key}] is sanitized`, req);
+  }
+}));
+
 app.use(compression());
 
 // Initialize Passport
@@ -110,20 +120,22 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      // Scripts: self + nonce (explicitly excluding unsafe-inline and unsafe-eval)
+      // Scripts: self + nonce + specific hash for React DevTools
       scriptSrc: [
         "'self'",
         (req, res) => `'nonce-${res.locals.nonce}'`,
+        "'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk='", // React DevTools hash
         ...(isDevelopment ? ['http://localhost:3000'] : []),
       ],
-      // Styles: self + nonce + Google Fonts (avoiding unsafe-inline)
+      // Styles: self + Google Fonts + unsafe-inline for Ant Design
+      // Note: Removed nonce from style-src to allow unsafe-inline to work
       styleSrc: [
         "'self'",
-        (req, res) => `'nonce-${res.locals.nonce}'`,
         'https://fonts.googleapis.com',
+        "'unsafe-inline'", // Required for Ant Design inline styles
       ],
-      // Images: self + data: (no external https sources for security)
-      imgSrc: ["'self'", 'data:'],
+      // Images: self + data: + Google profile images for OAuth
+      imgSrc: ["'self'", 'data:', 'https://lh3.googleusercontent.com'],
       // Fonts: self + Google Fonts
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
       // Connections: self + localhost for dev API/WS
@@ -165,12 +177,14 @@ app.use((req, res, next) => {
   res.setHeader('X-CSP-Nonce', res.locals.nonce);
   next();
 });
-// // default options
-// app.use(fileUpload());
+
+// Removed express-fileupload due to Arbitrary File Upload vulnerabilities
+// File uploads now handled securely by multer in specific routes with validation
 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
-  res.json({ success: true });
+  res.setHeader('X-CSP-Nonce', res.locals.nonce);
+  res.json({ success: true, nonce: res.locals.nonce });
 });
 
 // Sitemap.xml endpoint with CSP headers

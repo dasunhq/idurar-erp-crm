@@ -4,6 +4,7 @@ require('dotenv').config({ path: '.env.local' });
 const path = require('path');
 const { slugify } = require('transliteration');
 const fileFilterMiddleware = require('./utils/fileFilterMiddleware');
+const crypto = require('crypto');
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
@@ -83,7 +84,9 @@ const DoSingleStorage = ({
         let fileExtension = path.extname(req.files.file.name);
         const fileNameWithoutExt = path.parse(req.files.file.name).name;
 
-        let uniqueFileID = Math.random().toString(36).slice(2, 7); // generates unique ID of length 5
+        // Generate a cryptographically secure random ID using the crypto module
+        // This creates a Buffer with random bytes, converts to hex string, and takes first 5 characters
+        let uniqueFileID = crypto.randomBytes(8).toString('hex').slice(0, 5);
 
         let originalname = '';
         if (req.body.seotitle) {
