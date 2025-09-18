@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // SSRF Protection
 const { validateDoSpacesUrl } = require('./middlewares/ssrfProtection');
@@ -25,6 +26,15 @@ const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy'
 
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
+
+// Import rate limiters for DOS protection
+const {
+  apiLimiter,
+  authLimiter,
+  passwordResetLimiter,
+  uploadLimiter,
+  publicLimiter
+} = require('./middlewares/rateLimiter');
 
 // Removed express-fileupload due to security vulnerabilities (Snyk report 2025-10-04)
 // Using multer instead for secure file upload handling
@@ -87,6 +97,14 @@ app.use(
     },
   })
 );
+
+// Sanitize data against NoSQL injection attacks
+app.use(mongoSanitize({
+  replaceWith: '_',
+  onSanitize: ({ req, key }) => {
+    console.warn(`This request[${key}] is sanitized`, req);
+  }
+}));
 
 app.use(compression());
 
@@ -190,6 +208,14 @@ app.use((req, res, next) => {
 // Removed express-fileupload due to Arbitrary File Upload vulnerabilities
 // File uploads now handled securely by multer in specific routes with validation
 
+// Apply DOS protection rate limiters before routes
+// More specific routes first, then general rate limiter
+app.use('/api/login', authLimiter); // Stricter limit for login (5 req/15min)
+app.use('/api/forgetpassword', passwordResetLimiter); // Stricter limit for password reset
+app.use('/api/resetpassword', passwordResetLimiter); // Stricter limit for password reset
+app.use('/api', apiLimiter); 
+app.use('/download', uploadLimiter); // Rate limit file downloads (20 req/15min)
+app.use('/public', publicLimiter); // More permissive for public routes (200 req/15min) 
 // CSP Nonce endpoint for frontend
 app.get('/api/nonce', (req, res) => {
   res.setHeader('X-CSP-Nonce', res.locals.nonce);
