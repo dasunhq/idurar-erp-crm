@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
 /**
  * Secure file upload middleware using multer
@@ -42,9 +43,9 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    // Generate secure filename with timestamp and random string
+    // Generate secure filename with timestamp and cryptographically secure random string
     const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 15);
+    const randomString = crypto.randomBytes(8).toString('hex');
     const ext = path.extname(file.originalname).toLowerCase();
     const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '');
     const filename = `${timestamp}_${randomString}_${sanitizedName}`;
