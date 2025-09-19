@@ -54,7 +54,17 @@ const singleStorageUpload = ({
 
   let filterType = fileFilter(fileType);
 
-  const multerStorage = multer({ storage: diskStorage, fileFilter: filterType }).single('file');
+  const multerStorage = multer({
+    storage: diskStorage,
+    fileFilter: filterType,
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+      files: 1, // Single file upload
+      fieldNameSize: 100, // Limit field name size
+      fieldSize: 1024 * 1024, // 1MB field size limit
+      fields: 20 // Maximum 20 fields
+    }
+  }).single('file');
   return multerStorage;
 };
 

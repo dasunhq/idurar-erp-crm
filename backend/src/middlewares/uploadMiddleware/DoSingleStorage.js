@@ -1,6 +1,7 @@
 require('dotenv').config({ path: '.env' });
 require('dotenv').config({ path: '.env.local' });
 
+const multer = require('multer');
 const path = require('path');
 const { slugify } = require('transliteration');
 const fileFilterMiddleware = require('./utils/fileFilterMiddleware');
@@ -76,13 +77,13 @@ const DoSingleStorage = ({
       const s3Client = new S3Client(clientParams);
 
       try {
-        if (!fileFilterMiddleware({ type: fileType, mimetype: req.files.file.mimetype })) {
+        if (!fileFilterMiddleware({ type: fileType, mimetype: req.file.mimetype })) {
           // skip upload if File type not supported
           throw new Error('Uploaded file type not supported');
           // next();
         }
-        let fileExtension = path.extname(req.files.file.name);
-        const fileNameWithoutExt = path.parse(req.files.file.name).name;
+        let fileExtension = path.extname(req.file.originalname);
+        const fileNameWithoutExt = path.parse(req.file.originalname).name;
 
         // Generate a cryptographically secure random ID using the crypto module
         // This creates a Buffer with random bytes, converts to hex string, and takes first 5 characters
@@ -103,7 +104,7 @@ const DoSingleStorage = ({
           Key: `${filePath}`,
           Bucket: process.env.DO_SPACES_NAME,
           ACL: 'public-read',
-          Body: req.files.file.data,
+          Body: req.file.buffer,
         };
         const command = new PutObjectCommand(uploadParams);
         const s3response = await s3Client.send(command);
