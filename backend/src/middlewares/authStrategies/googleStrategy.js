@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
+const { authLimiter, publicLimiter } = require('../rateLimiter');
 
 const Admin = mongoose.model('Admin');
 const AdminPassword = mongoose.model('AdminPassword');
@@ -66,10 +67,11 @@ module.exports = (app) => {
   );
 
   // Google Auth Routes
-  app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+  app.get('/api/auth/google', authLimiter, passport.authenticate('google', { scope: ['profile', 'email'] }));
   
   app.get(
     '/api/auth/google/callback',
+    publicLimiter,
     passport.authenticate('google', { failureRedirect: '/login?error=google_auth_failed' }),
     async (req, res) => {
       try {

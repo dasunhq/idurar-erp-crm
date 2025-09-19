@@ -1,6 +1,7 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const mongoose = require('mongoose');
+const { authLimiter, publicLimiter } = require('../rateLimiter');
 
 const Admin = mongoose.model('Admin');
 const AdminPassword = mongoose.model('AdminPassword');
@@ -67,10 +68,11 @@ module.exports = (app) => {
   );
 
   // Facebook Auth Routes
-  app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+  app.get('/api/auth/facebook', authLimiter, passport.authenticate('facebook', { scope: ['email'] }));
   
   app.get(
     '/api/auth/facebook/callback',
+    publicLimiter,
     passport.authenticate('facebook', { failureRedirect: '/login?error=facebook_auth_failed' }),
     async (req, res) => {
       try {

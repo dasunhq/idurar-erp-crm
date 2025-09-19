@@ -265,7 +265,7 @@ if (!isDevelopment) {
   app.use(express.static(frontendBuildPath));
 
   // Handle client-side routing - serve index.html for non-API routes
-  app.get('*', (req, res, next) => {
+  app.get('*', publicLimiter, (req, res, next) => {
     // Skip API routes, downloads, and public routes
     if (
       req.path.startsWith('/api') ||
