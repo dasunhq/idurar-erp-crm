@@ -10,7 +10,17 @@ const search = async (Model, req, res) => {
   //     })
   //     .end();
   // }
-  const fieldsArray = req.query.fields ? req.query.fields.split(',') : ['name'];
+  let fieldsArray = ['name'];
+  if (req.query.fields) {
+    if (typeof req.query.fields !== 'string') {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'fields parameter must be a string',
+      });
+    }
+    fieldsArray = req.query.fields.split(',');
+  }
 
   const fields = { $or: [] };
 
