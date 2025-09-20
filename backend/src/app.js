@@ -2,6 +2,7 @@ const express = require('express');
 
 const cors = require('cors');
 const compression = require('compression');
+const csrf = require('csurf');
 
 const cookieParser = require('cookie-parser');
 
@@ -31,14 +32,25 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
+// CSRF Protection Configuration
+const csrfProtection = csrf({ 
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
+  }
+});
+
 // // default options
 // app.use(fileUpload());
 
 // Here our API Routes
 
+// Auth routes (login, csrf-token) don't need CSRF protection
 app.use('/api', coreAuthRouter);
-app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
-app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
+// Protected routes need CSRF protection
+app.use('/api', csrfProtection, adminAuth.isValidAuthToken, coreApiRouter);
+app.use('/api', csrfProtection, adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 
