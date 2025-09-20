@@ -22,9 +22,9 @@ const singleStorageUpload = ({
 
         let originalname = '';
         if (req.body.seotitle) {
-          originalname = slugify(req.body.seotitle.toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify((typeof req.body.seotitle === 'string' ? req.body.seotitle : '').toLowerCase()); // convert any language to English characters
         } else {
-          originalname = slugify(file.originalname.split('.')[0].toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify(file.originalname.split('.')[0].toLowerCase()); // convert any language to English characters
         }
 
         let _fileName = `${originalname}-${uniqueFileID}${fileExtension}`;
