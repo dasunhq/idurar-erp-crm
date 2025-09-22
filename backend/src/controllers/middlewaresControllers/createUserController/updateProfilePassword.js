@@ -17,11 +17,16 @@ const updateProfilePassword = async (userModel, req, res) => {
   if (!password || !passwordCheck)
     return res.status(400).json({ msg: 'Not all fields have been entered.' });
 
+<<<<<<< HEAD
   // Validate password length
   if (password.length < 8)
+=======
+    if (typeof req.body.password !== 'string' || req.body.password.length < 8) {
+>>>>>>> sudila/redos
     return res.status(400).json({
       msg: 'The password needs to be at least 8 characters long.',
     });
+  }
 
   // Validate password match
   if (password !== passwordCheck)

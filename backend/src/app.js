@@ -4,6 +4,7 @@ const path = require('path');
 
 const cors = require('cors');
 const compression = require('compression');
+const csrf = require('csurf');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -161,7 +162,7 @@ app.use(
         'https://fonts.googleapis.com',
         "'unsafe-inline'", // Required for Ant Design inline styles
       ],
-      // Images: self + data: + Google profile images for OAuth
+      // Images: self + data: + Google profile images for OAuth (required for authentication)
       imgSrc: ["'self'", 'data:', 'https://lh3.googleusercontent.com'],
       // Fonts: self + Google Fonts
       fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
@@ -203,6 +204,15 @@ app.use((req, res, next) => {
   // Add nonce to response headers so frontend can access it
   res.setHeader('X-CSP-Nonce', res.locals.nonce);
   next();
+});
+
+// CSRF Protection Configuration
+const csrfProtection = csrf({ 
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
+  }
 });
 
 // Removed express-fileupload due to Arbitrary File Upload vulnerabilities
@@ -248,11 +258,39 @@ app.get('/sitemap.xml', (req, res) => {
 </urlset>`);
 });
 
+// Sitemap.xml endpoint with CSP headers
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost:3000/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/login</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/forgotPassword</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>`);
+});
+
 // Here our API Routes
 
+// Auth routes (login, csrf-token) don't need CSRF protection
 app.use('/api', coreAuthRouter);
-app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
-app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
+// Protected routes need CSRF protection
+app.use('/api', csrfProtection, adminAuth.isValidAuthToken, coreApiRouter);
+app.use('/api', csrfProtection, adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 
@@ -289,7 +327,6 @@ if (!isDevelopment) {
     ) {
       return next();
     }
-
     // For development, serve a page that explains the correct setup
     res.send(`
       <!DOCTYPE html>

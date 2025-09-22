@@ -90,9 +90,9 @@ const DoSingleStorage = ({
 
         let originalname = '';
         if (req.body.seotitle) {
-          originalname = slugify(req.body.seotitle.toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify((typeof req.body.seotitle === 'string' ? req.body.seotitle : '').toLowerCase()); // convert any language to English characters
         } else {
-          originalname = slugify(fileNameWithoutExt.toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify(fileNameWithoutExt.toLowerCase()); // convert any language to English characters
         }
 
         let _fileName = `${originalname}-${uniqueFileID}${fileExtension}`;
