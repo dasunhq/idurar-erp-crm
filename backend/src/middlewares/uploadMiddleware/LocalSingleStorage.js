@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const { slugify } = require('transliteration');
+const crypto = require('crypto');
 
 const fileFilter = require('./utils/LocalfileFilter');
 
@@ -18,7 +19,9 @@ const singleStorageUpload = ({
       try {
         // fetching the file extension of the uploaded file
         let fileExtension = path.extname(file.originalname);
-        let uniqueFileID = Math.random().toString(36).slice(2, 7); // generates unique ID of length 5
+        // Generate a cryptographically secure random ID using the crypto module
+        // This creates a Buffer with random bytes, converts to hex string, and takes first 5 characters
+        let uniqueFileID = crypto.randomBytes(8).toString('hex').slice(0, 5);
 
         let originalname = '';
         if (req.body.seotitle) {
