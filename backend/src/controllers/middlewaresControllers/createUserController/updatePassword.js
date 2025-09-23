@@ -8,6 +8,7 @@ const updatePassword = async (userModel, req, res) => {
   const reqUserName = userModel.toLowerCase();
   const userProfile = req[reqUserName];
 
+<<<<<<< HEAD
   // Extract password from request body with type safety
   const passwordFromRequest = req.body.password;
   
@@ -25,6 +26,11 @@ const updatePassword = async (userModel, req, res) => {
   
   // Validate password length after ensuring it's a proper string
   if (password.length < 8) {
+=======
+  let { password } = req.body;
+
+    if (typeof req.body.password !== 'string' || req.body.password.length < 8) {
+>>>>>>> sudila/redos
     return res.status(400).json({
       msg: 'The password needs to be at least 8 characters long.',
     });

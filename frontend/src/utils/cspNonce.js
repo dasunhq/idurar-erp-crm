@@ -5,12 +5,12 @@
 let currentNonce = null;
 
 /**
- * Retrieve the current CSP nonce value (if exposed via headers).
- * @returns {Promise<string|null>} nonce or null
+ * Fetches the current CSP nonce from the server
+ * @returns {Promise<string|null>} The nonce value or null if unavailable
  */
 export const fetchCSPNonce = async () => {
   try {
-    // Attempt HEAD request to obtain nonce header
+    // Try to get nonce from current page first (for Vite dev server)
     const response = await fetch(window.location.href, {
       method: 'HEAD',
       credentials: 'include',
@@ -24,7 +24,7 @@ export const fetchCSPNonce = async () => {
       }
     }
 
-    // Fallback to backend endpoint
+    // Fallback to backend API endpoint
     const apiResponse = await fetch('/api/nonce', {
       method: 'GET',
       credentials: 'include',

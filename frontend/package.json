@@ -9,11 +9,13 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.0",
     "@ant-design/pro-layout": "^7.20.1",
+    "@babel/helpers": "^7.26.10",
+    "@babel/runtime": "^7.26.10",
     "@reduxjs/toolkit": "^2.2.1",
     "@vitejs/plugin-react": "^4.3.1",
     "antd": "^5.14.1",
     "axios": "^1.12.0",
-    "cross-env": "7.0.3",
+    "cross-env": "^10.1.0",
     "currency.js": "2.0.4",
     "dayjs": "^1.11.10",
     "just-compare": "^2.3.0",
@@ -24,8 +26,9 @@
     "react-router-dom": "^6.22.0",
     "redux": "^5.0.1",
     "reselect": "^5.1.0",
-    "uuid": "^13.0.0", 
+    "uuid": "^13.0.0",
     "shortid": "^2.2.17",
+>>>>>>> sudila/redos
     "vite": "^5.4.20"
   },
   "scripts": {
