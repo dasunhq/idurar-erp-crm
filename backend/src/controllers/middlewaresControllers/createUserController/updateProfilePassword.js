@@ -18,10 +18,11 @@ const updateProfilePassword = async (userModel, req, res) => {
     return res.status(400).json({ msg: 'Not all fields have been entered.' });
 
   // Validate password length
-  if (password.length < 8)
+  if (password.length < 8){
     return res.status(400).json({
       msg: 'The password needs to be at least 8 characters long.',
     });
+  }
 
   // Validate password match
   if (password !== passwordCheck)

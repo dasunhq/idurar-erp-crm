@@ -25,9 +25,9 @@ const singleStorageUpload = ({
 
         let originalname = '';
         if (req.body.seotitle) {
-          originalname = slugify(req.body.seotitle.toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify((typeof req.body.seotitle === 'string' ? req.body.seotitle : '').toLowerCase()); // convert any language to English characters
         } else {
-          originalname = slugify(file.originalname.split('.')[0].toLocaleLowerCase()); // convert any language to English characters
+          originalname = slugify(file.originalname.split('.')[0].toLowerCase()); // convert any language to English characters
         }
 
         let _fileName = `${originalname}-${uniqueFileID}${fileExtension}`;
@@ -54,7 +54,17 @@ const singleStorageUpload = ({
 
   let filterType = fileFilter(fileType);
 
-  const multerStorage = multer({ storage: diskStorage, fileFilter: filterType }).single('file');
+  const multerStorage = multer({
+    storage: diskStorage,
+    fileFilter: filterType,
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+      files: 1, // Single file upload
+      fieldNameSize: 100, // Limit field name size
+      fieldSize: 1024 * 1024, // 1MB field size limit
+      fields: 20 // Maximum 20 fields
+    }
+  }).single('file');
   return multerStorage;
 };
 

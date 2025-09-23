@@ -50,14 +50,13 @@ export function setupSecurityHeaders() {
       // Allow everything from same origin
       "default-src 'self'",
 
-      // Scripts: Use strict nonce-based CSP for better security
-      // Note: Removed 'unsafe-eval' for improved security posture
+      // Scripts: For development, we need to allow unsafe-inline and unsafe-eval for hot module reload
       isDevelopment
-        ? `script-src 'self' 'nonce-${nonce}' 'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk=' http://localhost:3000`
+        ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000`
         : `script-src 'self' 'nonce-${nonce}' 'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk='`,
 
       // Styles: Allow self, unsafe-inline, and Google Fonts
-      // Note: Removed nonce from style-src to allow unsafe-inline to work
+      // Using only unsafe-inline for styles as nonce is ignored when unsafe-inline is present
       `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
 
       // Images: Allow self, data URLs, and Google profile images
@@ -67,7 +66,7 @@ export function setupSecurityHeaders() {
       "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
 
       // Connections: Allow self, localhost for dev API, and websockets for HMR
-      "connect-src 'self' http://localhost:3000 http://localhost:8888 ws://localhost:3000 ws://localhost:8888",
+      "connect-src 'self' http://localhost:3000 http://localhost:8888 ws://localhost:3000 ws://localhost:3000/__vite_hmr ws://localhost:8888",
 
       // Frames: Only allow self
       "frame-src 'self'",
