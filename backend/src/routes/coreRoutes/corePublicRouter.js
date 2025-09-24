@@ -8,17 +8,35 @@ router.route('/:subPath/:directory/:file').get(function (req, res) {
   try {
     const { subPath, directory, file } = req.params;
 
-    // Decode each parameter separately
-    const decodedSubPath = decodeURIComponent(subPath);
-    const decodedDirectory = decodeURIComponent(directory);
-    const decodedFile = decodeURIComponent(file);
+    // Sanitize and validate path parameters
+    const sanitizePath = (segment) => {
+      if (!segment || typeof segment !== 'string') return '';
+      // Remove any directory traversal sequences and normalize
+      return segment.replace(/\.{2,}/g, '')        // Remove double dots
+                   .replace(/\/+/g, '')            // Remove forward slashes
+                   .replace(/\\+/g, '')            // Remove backslashes
+                   .replace(/[^a-zA-Z0-9-_\.]/g, ''); // Only allow safe chars
+    };
+
+    // Sanitize each decoded parameter
+    const cleanSubPath = sanitizePath(decodeURIComponent(subPath));
+    const cleanDirectory = sanitizePath(decodeURIComponent(directory));
+    const cleanFile = sanitizePath(decodeURIComponent(file));
+
+    // Reject empty or invalid paths
+    if (!cleanSubPath || !cleanDirectory || !cleanFile) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid file path parameters',
+      });
+    }
 
     // Define the trusted root directory
-    const rootDir = path.join(__dirname, '../../public');
+    const rootDir = path.resolve(path.join(__dirname, '../../public'));
 
-    // Safely join the decoded path segments
-    const relativePath = path.join(decodedSubPath, decodedDirectory, decodedFile);
-    const absolutePath = path.join(rootDir, relativePath);
+    // Safely join the sanitized path segments
+    const relativePath = path.join(cleanSubPath, cleanDirectory, cleanFile);
+    const absolutePath = path.resolve(path.join(rootDir, relativePath));
 
     // Check if the resulting path stays inside rootDir
     if (!isPathInside(absolutePath, rootDir)) {
@@ -33,7 +51,7 @@ router.route('/:subPath/:directory/:file').get(function (req, res) {
         return res.status(404).json({
           success: false,
           result: null,
-          message: 'we could not find : ' + file,
+          message: 'File not found', // Generic error for security
         });
       }
     });
