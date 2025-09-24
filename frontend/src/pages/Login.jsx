@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import useLanguage from '@/locale/useLanguage';
 
-import { Form, Button } from 'antd';
+import { Form, Button, Divider, notification } from 'antd';
+import { LoginOutlined, GoogleOutlined, FacebookOutlined } from '@ant-design/icons';
 
 import { login } from '@/redux/auth/actions';
 import { selectAuth } from '@/redux/auth/selectors';
@@ -26,7 +27,27 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isSuccess) navigate('/');
-  }, [isSuccess]);
+    
+    // Handle OAuth error messages
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    if (error) {
+      let message = 'Authentication failed. Please try again.';
+      if (error === 'google_auth_failed') {
+        message = 'Google authentication failed. Please try again.';
+      } else if (error === 'facebook_auth_failed') {
+        message = 'Facebook authentication failed. Please try again.';
+      } else if (error === 'auth_parse_failed') {
+        message = 'Authentication data parsing failed. Please try again.';
+      }
+      notification.error({
+        message: 'Authentication Error',
+        description: message,
+      });
+      // Clean up URL
+      window.history.replaceState({}, document.title, '/login');
+    }
+  }, [isSuccess, navigate]);
 
   const FormContainer = () => {
     return (
@@ -37,8 +58,8 @@ const LoginPage = () => {
           className="login-form"
           initialValues={{
             remember: true,
-            email:'admin@admin.com',
-            password:'admin123',
+            email: 'admin@admin.com',
+            password: 'admin123',
           }}
           onFinish={onFinish}
         >
@@ -51,9 +72,36 @@ const LoginPage = () => {
               loading={isLoading}
               size="large"
             >
-              {translate('Log in')}
+              <LoginOutlined /> {translate('Log in')}
             </Button>
           </Form.Item>
+
+          <Divider>
+            {translate('Or')} {translate('sign_in_with')}
+          </Divider>
+
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Button
+              type="default"
+              className="login-form-button"
+              size="large"
+              icon={<GoogleOutlined />}
+              onClick={() => (window.location.href = 'http://localhost:8888/api/auth/google')}
+              style={{ flex: 1 }}
+            >
+              {translate('Google')}
+            </Button>
+            <Button
+              type="default"
+              className="login-form-button"
+              size="large"
+              icon={<FacebookOutlined />}
+              onClick={() => (window.location.href = 'http://localhost:8888/api/auth/facebook')}
+              style={{ flex: 1 }}
+            >
+              {translate('Facebook')}
+            </Button>
+          </div>
         </Form>
       </Loading>
     );
