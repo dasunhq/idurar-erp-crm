@@ -3,8 +3,9 @@ const router = express.Router();
 
 const path = require('path');
 const { isPathInside } = require('../../utils/is-path-inside');
+const { publicLimiter } = require('../../middlewares/rateLimiter');
 
-router.route('/:subPath/:directory/:file').get(function (req, res) {
+router.route('/:subPath/:directory/:file').get(publicLimiter, function (req, res) {
   try {
     const { subPath, directory, file } = req.params;
 
