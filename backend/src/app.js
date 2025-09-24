@@ -4,6 +4,7 @@ const cors = require('cors');
 const compression = require('compression');
 
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
 
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
@@ -34,7 +35,16 @@ app.use(compression());
 // // default options
 // app.use(fileUpload());
 
-// Here our API Routes
+// Set up rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minute
+  max: 100, // max 100 requests per windowMs
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Apply the rate limiting middleware to API calls only
+app.use('/api', limiter);
 
 app.use('/api', coreAuthRouter);
 app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
