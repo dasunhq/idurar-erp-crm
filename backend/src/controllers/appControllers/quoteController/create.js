@@ -26,19 +26,51 @@ const create = async (req, res) => {
   taxTotal = calculate.multiply(subTotal, taxRate / 100);
   total = calculate.add(subTotal, taxTotal);
 
-  let body = req.body;
+  // Sanitize request body to prevent NoSQL injection
+  const sanitizeObject = (obj) => {
+    const sanitized = {};
+    for (const [key, value] of Object.entries(obj)) {
+      // Skip keys that start with $ (MongoDB operators) or contain dots (path traversal)
+      if (!key.startsWith('$') && !key.includes('.')) {
+        if (value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+          sanitized[key] = sanitizeObject(value);
+        } else {
+          sanitized[key] = value;
+        }
+      }
+    }
+    return sanitized;
+  };
 
-  body['subTotal'] = subTotal;
-  body['taxTotal'] = taxTotal;
-  body['total'] = total;
-  body['items'] = items;
-  body['createdBy'] = req.admin._id;
+  const sanitizedBody = sanitizeObject(req.body);
+
+  // Build the quote data with sanitized input and calculated values
+  const body = {
+    ...sanitizedBody,
+    subTotal: subTotal,
+    taxTotal: taxTotal,
+    total: total,
+    items: items,
+    createdBy: req.admin._id,
+  };
 
   // Creating a new document in the collection
   const result = await new Model(body).save();
-  const fileId = 'quote-' + result._id + '.pdf';
+  
+  // Validate the created document's ObjectId
+  if (!mongoose.Types.ObjectId.isValid(result._id)) {
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Invalid document ID generated',
+    });
+  }
+
+  const validatedId = new mongoose.Types.ObjectId(result._id);
+  const fileId = 'quote-' + validatedId.toString() + '.pdf';
+  
   const updateResult = await Model.findOneAndUpdate(
-    { _id: result._id },
+    { _id: validatedId },
     { pdf: fileId },
     {
       new: true,
