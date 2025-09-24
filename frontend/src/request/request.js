@@ -19,8 +19,14 @@ function includeToken() {
   axios.defaults.withCredentials = true;
   const auth = storePersist.get('auth');
 
+  console.log('includeToken - auth from localStorage:', auth);
+  
   if (auth) {
+    console.log('includeToken - current user:', auth.current);
+    console.log('includeToken - token to use:', auth.current.token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${auth.current.token}`;
+  } else {
+    console.log('includeToken - No auth found in localStorage');
   }
 }
 
