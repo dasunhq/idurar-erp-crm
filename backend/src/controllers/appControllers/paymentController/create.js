@@ -16,8 +16,18 @@ const create = async (req, res) => {
     });
   }
 
+  // Validate that invoice ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.body.invoice)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid invoice ID format',
+    });
+  }
+
+  const validatedInvoiceId = mongoose.Types.ObjectId(req.body.invoice);
   const currentInvoice = await Invoice.findOne({
-    _id: req.body.invoice,
+    _id: validatedInvoiceId,
     removed: false,
   });
 
@@ -64,7 +74,7 @@ const create = async (req, res) => {
       : 'unpaid';
 
   const invoiceUpdate = await Invoice.findOneAndUpdate(
-    { _id: req.body.invoice },
+    { _id: validatedInvoiceId },
     {
       $push: { payment: paymentId.toString() },
       $inc: { credit: amount },
