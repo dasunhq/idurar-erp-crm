@@ -3,9 +3,20 @@ const mongoose = require('mongoose');
 const Model = mongoose.model('Quote');
 
 const read = async (req, res) => {
+  // Validate that quote ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid quote ID format',
+    });
+  }
+
+  const validatedId = new mongoose.Types.ObjectId(req.params.id);
+
   // Find document by id
   const result = await Model.findOne({
-    _id: req.params.id,
+    _id: validatedId,
     removed: false,
   })
     .populate('createdBy', 'name')
