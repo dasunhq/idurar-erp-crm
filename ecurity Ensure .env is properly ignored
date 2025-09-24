@@ -1,0 +1,13 @@
+[1mdiff --git a/backend/.gitignore b/backend/.gitignore[m
+[1mindex 4eb5ea6b..b816e142 100644[m
+[1m--- a/backend/.gitignore[m
+[1m+++ b/backend/.gitignore[m
+[36m@@ -5,4 +5,5 @@[m [mnode_modules/[m
+ notes.md[m
+ .env.local[m
+ [m
+[31m-*.pdf[m
+\ No newline at end of file[m
+[32m+[m[32m*.pdf[m
+[32m+[m[32m.env[m
+\ No newline at end of file[m

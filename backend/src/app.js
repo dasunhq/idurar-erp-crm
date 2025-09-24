@@ -13,6 +13,7 @@ const adminAuth = require('./controllers/coreControllers/adminAuth');
 
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
+const { globalRateLimiter } = require('./middlewares/rateLimiter');
 
 const fileUpload = require('express-fileupload');
 // create our Express app
@@ -30,6 +31,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
+
+// Apply global rate limiting to all requests
+app.use(globalRateLimiter);
 
 // // default options
 // app.use(fileUpload());
