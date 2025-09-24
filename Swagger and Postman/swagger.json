@@ -1,0 +1,1049 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "idurar-erp-crm API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/taxes/create": {
+      "post": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Create a new taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/read/{id}": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Read a taxes by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/update/{id}": {
+      "patch": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Update a taxes by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Delete a taxes by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/search": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Search for taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/list": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "List taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/listAll": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "List all taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/filter": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Filter taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/taxes/summary": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Get a summary of taxes",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/create": {
+      "post": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Create a new quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/read/{id}": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Read a quote by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/update/{id}": {
+      "patch": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Update a quote by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Delete a quote by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/search": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Search for quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/list": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "List quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/listAll": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "List all quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/filter": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Filter quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/summary": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Get a summary of quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/mail": {
+      "post": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Mail a quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/quote/convert/{id}": {
+      "get": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Convert a quote",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/create": {
+      "post": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Create a new paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/read/{id}": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Read a paymentmode by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/update/{id}": {
+      "patch": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Update a paymentmode by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Delete a paymentmode by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/search": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Search for paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/list": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "List paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/listAll": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "List all paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/filter": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Filter paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/paymentmode/summary": {
+      "get": {
+        "tags": [
+          "Paymentmode"
+        ],
+        "summary": "Get a summary of paymentmode",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/create": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create a new payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/read/{id}": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Read a payment by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/update/{id}": {
+      "patch": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Update a payment by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Delete a payment by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/search": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Search for payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/list": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "List payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/listAll": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "List all payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/filter": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Filter payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/summary": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Get a summary of payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/payment/mail": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Mail a payment",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/create": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create a new invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/read/{id}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Read a invoice by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/update/{id}": {
+      "patch": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Update a invoice by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Delete a invoice by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/search": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Search for invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/list": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "List invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/listAll": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "List all invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/filter": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Filter invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/summary": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Get a summary of invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/invoice/mail": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Mail a invoice",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/create": {
+      "post": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Create a new client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/read/{id}": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Read a client by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/update/{id}": {
+      "patch": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Update a client by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Delete a client by ID",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/search": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Search for client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/list": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "List client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/listAll": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "List all client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/filter": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Filter client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/client/summary": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Get a summary of client",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/forgetpassword": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Forget Password",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/resetpassword": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset Password",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/admin/read/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Read admin",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/admin/password-update/{id}": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update admin password",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/admin/profile/password": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update profile password",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/admin/profile/update": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update profile",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/create": {
+      "post": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Create setting",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/read/{id}": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Read setting",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/update/{id}": {
+      "patch": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Update setting",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/search": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Search settings",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/list": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "List settings",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/listAll": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "List all settings",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/filter": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Filter settings",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/readBySettingKey/{settingKey}": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Read setting by key",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/listBySettingKey": {
+      "get": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "List settings by key",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/updateBySettingKey/{settingKey}": {
+      "patch": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Update setting by key",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/upload/{settingKey}": {
+      "patch": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Upload setting",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/setting/updateManySetting": {
+      "patch": {
+        "tags": [
+          "Setting"
+        ],
+        "summary": "Update many settings",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/download/{directory}/{file}": {
+      "get": {
+        "tags": [
+          "Download"
+        ],
+        "summary": "Download a file",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/public/{subPath}/{directory}/{file}": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "Get a public file",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}
