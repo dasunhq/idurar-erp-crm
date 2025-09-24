@@ -5,7 +5,7 @@ const Model = mongoose.model('Invoice');
 const read = async (req, res) => {
   // Find document by id
   const result = await Model.findOne({
-    _id: req.params.id,
+    _id: new mongoose.Types.ObjectId(req.params.id),
     removed: false,
   })
     .populate('createdBy', 'name')
