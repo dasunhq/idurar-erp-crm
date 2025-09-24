@@ -73,17 +73,22 @@ Copy the following values from your Facebook app dashboard:
 ## Environment Configuration
 
 ### Step 1: Update .env File
-Add the following variables to your `backend/.env` file:
+Copy the example environment file and add your credentials:
+```bash
+cp backend/.env.example backend/.env
+```
+
+Then edit `backend/.env` and replace the placeholder values with your actual credentials:
 ```env
 # OAuth Configuration
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
+GOOGLE_CLIENT_ID=your_actual_google_client_id
+GOOGLE_CLIENT_SECRET=your_actual_google_client_secret
+FACEBOOK_APP_ID=your_actual_facebook_app_id
+FACEBOOK_APP_SECRET=your_actual_facebook_app_secret
 FRONTEND_URL=http://localhost:3000
 ```
 
-Replace the placeholder values with your actual credentials.
+**Note**: The `.env` file is gitignored and should never be committed to version control.
 
 ### Step 2: Verify .env.example
 Ensure your `backend/.env.example` file includes these variables (without actual values):
