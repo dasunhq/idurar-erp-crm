@@ -4,9 +4,20 @@ const Model = mongoose.model('Payment');
 const Invoice = mongoose.model('Invoice');
 
 const remove = async (req, res) => {
+  // Validate that payment ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid payment ID format',
+    });
+  }
+
+  const validatedId = new mongoose.Types.ObjectId(req.params.id);
+
   // Find document by id and updates with the required fields
   const previousPayment = await Model.findOne({
-    _id: req.params.id,
+    _id: validatedId,
     removed: false,
   });
 
@@ -27,7 +38,7 @@ const remove = async (req, res) => {
   };
   // Find the document by id and delete it
   const result = await Model.findOneAndUpdate(
-    { _id: req.params.id, removed: false },
+    { _id: validatedId, removed: false },
     { $set: updates },
     {
       new: true, // return the new result instead of the old one

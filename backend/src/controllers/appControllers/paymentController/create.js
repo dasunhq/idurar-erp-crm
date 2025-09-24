@@ -25,7 +25,7 @@ const create = async (req, res) => {
     });
   }
 
-  const validatedInvoiceId = mongoose.Types.ObjectId(req.body.invoice);
+  const validatedInvoiceId = new mongoose.Types.ObjectId(req.body.invoice);
   const currentInvoice = await Invoice.findOne({
     _id: validatedInvoiceId,
     removed: false,
