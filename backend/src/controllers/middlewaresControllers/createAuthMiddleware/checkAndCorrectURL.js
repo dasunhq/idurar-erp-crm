@@ -1,7 +1,8 @@
 const { URL } = require('url');
 
 function checkAndCorrectURL(url) {
-  const allowedDomains = ['localhost', 'idurarapp.com', 'demo.idurarapp.com', 'cloud.idurarapp.com']; // Add your allowed domains here
+  // Add allowed domains here
+  const allowedDomains = ['localhost', 'idurarapp.com', 'demo.idurarapp.com', 'cloud.idurarapp.com']; 
 
   // detect if it has http or https:
   const hasHttps = url.startsWith('https://');
