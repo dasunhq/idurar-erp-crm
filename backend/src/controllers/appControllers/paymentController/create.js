@@ -73,12 +73,28 @@ const create = async (req, res) => {
       ? 'partially'
       : 'unpaid';
 
+  // Sanitize and validate values for the update operation
+  const sanitizedAmount = Number(amount);
+  const sanitizedPaymentId = paymentId.toString();
+  const sanitizedPaymentStatus = ['paid', 'partially', 'unpaid'].includes(paymentStatus) 
+    ? paymentStatus 
+    : 'unpaid';
+
+  // Validate that amount is a valid number
+  if (isNaN(sanitizedAmount) || sanitizedAmount < 0) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid payment amount',
+    });
+  }
+
   const invoiceUpdate = await Invoice.findOneAndUpdate(
     { _id: validatedInvoiceId },
     {
-      $push: { payment: paymentId.toString() },
-      $inc: { credit: amount },
-      $set: { paymentStatus: paymentStatus },
+      $push: { payment: sanitizedPaymentId },
+      $inc: { credit: sanitizedAmount },
+      $set: { paymentStatus: sanitizedPaymentStatus },
     },
     {
       new: true, // return the new result instead of the old one
