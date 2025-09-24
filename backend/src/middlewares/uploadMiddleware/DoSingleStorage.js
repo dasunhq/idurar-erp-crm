@@ -9,8 +9,17 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 const secretAccessKey = process.env.DO_SPACES_SECRET;
 const accessKeyId = process.env.DO_SPACES_KEY;
-const endpoint = 'https://' + process.env.DO_SPACES_URL;
+
+const doSpacesUrl = process.env.DO_SPACES_URL;
 const region = process.env.REGION;
+
+// Validate DO_SPACES_URL to prevent SSRF
+const doSpacesUrlRegex = /^[a-z0-9.-]+\.digitaloceanspaces\.com$/;
+if (!doSpacesUrlRegex.test(doSpacesUrl)) {
+  throw new Error('Invalid DO_SPACES_URL');
+}
+
+const endpoint = 'https://' + doSpacesUrl;
 
 const clientParams = {
   endpoint: endpoint,
