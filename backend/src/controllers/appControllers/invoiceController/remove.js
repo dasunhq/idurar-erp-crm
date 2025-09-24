@@ -4,9 +4,19 @@ const Model = mongoose.model('Invoice');
 const ModelPayment = mongoose.model('Payment');
 
 const remove = async (req, res) => {
+  // Validate that invoice ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid invoice ID format',
+    });
+  }
+
+  const validatedId = mongoose.Types.ObjectId(req.params.id);
   const deletedInvoice = await Model.findOneAndUpdate(
     {
-      _id: req.params.id,
+      _id: validatedId,
       removed: false,
     },
     {
