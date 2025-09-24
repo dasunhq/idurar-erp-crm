@@ -14,9 +14,21 @@ const update = async (req, res) => {
       message: `The Minimum Amount couldn't be 0`,
     });
   }
+
+  // Validate that payment ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid payment ID format',
+    });
+  }
+
+  const validatedId = new mongoose.Types.ObjectId(req.params.id);
+
   // Find document by id and updates with the required fields
   const previousPayment = await Model.findOne({
-    _id: req.params.id,
+    _id: validatedId,
     removed: false,
   });
 
@@ -45,30 +57,77 @@ const update = async (req, res) => {
       : 'unpaid';
 
   const updatedDate = new Date();
-  const updates = {
-    number: req.body.number,
-    date: req.body.date,
-    amount: req.body.amount,
-    paymentMode: req.body.paymentMode,
-    ref: req.body.ref,
-    description: req.body.description,
+  
+  // Sanitize and validate update fields to prevent NoSQL injection
+  const sanitizeValue = (value) => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+      // Prevent object injection - only allow primitive values
+      return null;
+    }
+    return value;
+  };
+
+  // Validate amount is a number
+  const sanitizedAmount = Number(req.body.amount);
+  if (isNaN(sanitizedAmount) || sanitizedAmount < 0) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid amount value',
+    });
+  }
+
+  // Create sanitized updates object with explicit field mapping to prevent NoSQL injection
+  const sanitizedUpdates = {};
+  
+  // Whitelist allowed fields and sanitize each one explicitly
+  const allowedFields = {
+    number: sanitizeValue(req.body.number),
+    date: sanitizeValue(req.body.date),
+    amount: sanitizedAmount,
+    paymentMode: sanitizeValue(req.body.paymentMode),
+    ref: sanitizeValue(req.body.ref),
+    description: sanitizeValue(req.body.description),
     updated: updatedDate,
   };
 
+  // Only include non-null values and ensure no MongoDB operators
+  for (const [key, value] of Object.entries(allowedFields)) {
+    if (value !== null && value !== undefined && !key.startsWith('$') && !key.includes('.')) {
+      sanitizedUpdates[key] = value;
+    }
+  }
+
   const result = await Model.findOneAndUpdate(
-    { _id: req.params.id, removed: false },
-    { $set: updates },
+    { _id: validatedId, removed: false },
+    { $set: sanitizedUpdates },
     {
       new: true, // return the new result instead of the old one
     }
   ).exec();
 
+  // Sanitize values for Invoice update to prevent NoSQL injection
+  const sanitizedChangedAmount = Number(changedAmount);
+  const sanitizedPaymentStatus = ['paid', 'partially', 'unpaid'].includes(paymentStatus) 
+    ? paymentStatus 
+    : 'unpaid';
+
+  // Validate changed amount is a valid number
+  if (isNaN(sanitizedChangedAmount)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid payment amount calculation',
+    });
+  }
+
   const updateInvoice = await Invoice.findOneAndUpdate(
     { _id: result.invoice._id.toString() },
     {
-      $inc: { credit: changedAmount },
+      $inc: { credit: sanitizedChangedAmount },
       $set: {
-        paymentStatus: paymentStatus,
+        paymentStatus: sanitizedPaymentStatus,
       },
     },
     {

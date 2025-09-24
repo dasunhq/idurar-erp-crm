@@ -3,10 +3,34 @@ const mongoose = require('mongoose');
 const read = async (userModel, req, res) => {
   const User = mongoose.model(userModel);
 
-  // Find document by id
+  // Validate and sanitize the ID parameter
+  const rawId = req.params.id;
+  
+  // Input validation and sanitization
+  if (!rawId || typeof rawId !== 'string') {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid ID parameter',
+    });
+  }
+
+  // Validate ObjectId format and prevent NoSQL injection
+  let validatedId;
+  try {
+    validatedId = new mongoose.Types.ObjectId(rawId.toString());
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid ID format',
+    });
+  }
+
+  // Find document by id with secure query using $eq operator
   const tmpResult = await User.findOne({
-    _id: req.params.id,
-    removed: false,
+    _id: { $eq: validatedId },
+    removed: { $eq: false },
   }).exec();
   // If no results found, return document not found
   if (!tmpResult) {

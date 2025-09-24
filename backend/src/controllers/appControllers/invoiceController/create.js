@@ -51,7 +51,7 @@ const create = async (req, res) => {
   const result = await new Model(body).save();
   const fileId = 'invoice-' + result._id + '.pdf';
   const updateResult = await Model.findOneAndUpdate(
-    { _id: result._id },
+    { _id: new mongoose.Types.ObjectId(result._id) },
     { pdf: fileId },
     {
       new: true,
