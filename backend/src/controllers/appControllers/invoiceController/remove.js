@@ -13,7 +13,7 @@ const remove = async (req, res) => {
     });
   }
 
-  const validatedId = mongoose.Types.ObjectId(req.params.id);
+  const validatedId = new mongoose.Types.ObjectId(req.params.id);
   const deletedInvoice = await Model.findOneAndUpdate(
     {
       _id: validatedId,
