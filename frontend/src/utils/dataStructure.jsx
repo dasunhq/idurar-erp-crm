@@ -4,7 +4,6 @@ import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { countryList } from '@/utils/countryList';
 import { v4 as uuidv4 } from 'uuid';
 import color from '@/utils/color';
-import { webcrypto } from 'crypto';
 
 export const dataForRead = ({ fields, translate }) => {
   let columns = [];
@@ -223,7 +222,13 @@ function getRandomColor() {
 
   // Generate a cryptographically secure random index between 0 and the length of the colors array
   let array = new Uint32Array(1);
-  webcrypto.getRandomValues(array);
+  // Use browser's built-in crypto.getRandomValues() instead of Node.js webcrypto
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+    window.crypto.getRandomValues(array);
+  } else {
+    // Fallback for server-side rendering or environments without crypto
+    array[0] = Math.floor(Math.random() * 0xFFFFFFFF);
+  }
   const randomIndex = array[0] % colors.length;
 
   // Return the color at the randomly generated index

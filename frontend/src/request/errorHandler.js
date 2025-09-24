@@ -39,9 +39,11 @@ const errorHandler = (error) => {
   }
 
   if (response && response.data && response.data.jwtExpired) {
+    console.log('JWT Expired detected:', response.data);
     const result = window.localStorage.getItem('auth');
     const jsonFile = window.localStorage.getItem('isLogout');
     const { isLogout } = (jsonFile && JSON.parse(jsonFile)) || false;
+    console.log('Clearing auth data and redirecting to logout');
     window.localStorage.removeItem('auth');
     window.localStorage.removeItem('isLogout');
     if (result || isLogout) {

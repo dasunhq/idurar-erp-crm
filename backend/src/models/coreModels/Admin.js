@@ -42,6 +42,24 @@ const adminSchema = new Schema({
     unique: true,
     sparse: true,
   },
+  // OAuth tokens storage
+  oauthTokens: {
+    google: {
+      accessToken: String,
+      refreshToken: String,
+      expiresAt: Date,
+    },
+    facebook: {
+      accessToken: String,
+      refreshToken: String,
+      expiresAt: Date,
+    }
+  },
+  // Last OAuth token refresh
+  lastTokenRefresh: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 module.exports = mongoose.model('Admin', adminSchema);

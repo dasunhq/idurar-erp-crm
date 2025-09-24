@@ -31,6 +31,15 @@ const AdminPasswordSchema = new Schema({
     type: [String],
     default: [],
   },
+  // Refresh tokens storage
+  refreshTokens: {
+    type: [String],
+    default: [],
+  },
+  // Token expiry tracking
+  tokenExpiresAt: {
+    type: Date,
+  },
 });
 
 // AdminPasswordSchema.index({ user: 1 });

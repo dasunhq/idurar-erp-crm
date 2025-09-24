@@ -24,6 +24,10 @@ const AuthCallback = () => {
         // Parse the encoded user data
         const userData = JSON.parse(decodeURIComponent(data));
         
+        // Debug: Log the received data
+        console.log('OAuth callback received userData:', userData);
+        console.log('Token in userData:', userData.token);
+        
         // Store auth state directly
         const auth_state = {
           current: userData,
@@ -31,6 +35,9 @@ const AuthCallback = () => {
           isLoading: false,
           isSuccess: true,
         };
+        
+        console.log('Storing auth_state:', auth_state);
+        console.log('Token that will be used for API calls:', auth_state.current.token);
         
         window.localStorage.setItem('auth', JSON.stringify(auth_state));
         window.localStorage.removeItem('isLogout');

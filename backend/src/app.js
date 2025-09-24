@@ -19,6 +19,7 @@ const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
 const coreApiRouter = require('./routes/coreRoutes/coreApi');
 const coreDownloadRouter = require('./routes/coreRoutes/coreDownloadRouter');
 const corePublicRouter = require('./routes/coreRoutes/corePublicRouter');
+const authRoutes = require('./routes/authRoutes');
 const adminAuth = require('./controllers/coreControllers/adminAuth');
 
 // OAuth Strategies
@@ -288,6 +289,13 @@ app.get('/sitemap.xml', (req, res) => {
 
 // Auth routes (login, csrf-token) don't need CSRF protection
 app.use('/api', coreAuthRouter);
+// Enhanced token management routes (refresh, revoke, verify)
+app.use('/api/auth', authRoutes);
+// Debug routes for troubleshooting authentication (only in development)
+if (process.env.NODE_ENV !== 'production') {
+  const debugRoutes = require('./routes/debugRoutes');
+  app.use('/api/debug', debugRoutes);
+}
 // Protected routes need CSRF protection
 app.use('/api', csrfProtection, adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', csrfProtection, adminAuth.isValidAuthToken, erpApiRouter);
