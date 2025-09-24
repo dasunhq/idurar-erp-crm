@@ -20,8 +20,18 @@ const update = async (req, res) => {
     });
   }
 
+  // Validate that invoice ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid invoice ID format',
+    });
+  }
+
+  const validatedId = new mongoose.Types.ObjectId(req.params.id);
   const previousInvoice = await Model.findOne({
-    _id: req.params.id,
+    _id: validatedId,
     removed: false,
   });
 
@@ -57,7 +67,7 @@ const update = async (req, res) => {
   body['taxTotal'] = taxTotal;
   body['total'] = total;
   body['items'] = items;
-  body['pdf'] = 'invoice-' + req.params.id + '.pdf';
+  body['pdf'] = 'invoice-' + validatedId.toString() + '.pdf';
   if (body.hasOwnProperty('currency')) {
     delete body.currency;
   }
@@ -67,7 +77,7 @@ const update = async (req, res) => {
     calculate.sub(total, discount) === credit ? 'paid' : credit > 0 ? 'partially' : 'unpaid';
   body['paymentStatus'] = paymentStatus;
 
-  const result = await Model.findOneAndUpdate({ _id: req.params.id, removed: false }, body, {
+  const result = await Model.findOneAndUpdate({ _id: validatedId, removed: false }, body, {
     new: true, // return the new result instead of the old one
   }).exec();
 
