@@ -19,6 +19,7 @@ const facebookStrategy = require('./middlewares/authStrategies/facebookStrategy'
 
 const errorHandlers = require('./handlers/errorHandlers');
 const erpApiRouter = require('./routes/appRoutes/appApi');
+const { globalRateLimiter } = require('./middlewares/rateLimiter');
 
 const fileUpload = require('express-fileupload');
 // create our Express app
@@ -49,6 +50,9 @@ app.use(
 );
 
 app.use(compression());
+
+// Apply global rate limiting to all requests
+app.use(globalRateLimiter);
 
 // Initialize Passport
 app.use(passport.initialize());
