@@ -4,6 +4,9 @@ const cors = require('cors');
 const compression = require('compression');
 
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
+
 const rateLimit = require('express-rate-limit');
 
 const coreAuthRouter = require('./routes/coreRoutes/coreAuth');
