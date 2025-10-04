@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Bench DoS Vulnerability Test Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+            margin: 5px 0;
+        }
+
+        .vulnerability-alert {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 40px;
+            border-radius: 8px;
+        }
+
+        .vulnerability-alert h2 {
+            color: #856404;
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vulnerability-alert h2::before {
+            content: "⚠️";
+            font-size: 24px;
+        }
+
+        .vulnerability-alert p {
+            color: #856404;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-card .unit {
+            font-size: 14px;
+            color: #888;
+            margin-left: 5px;
+        }
+
+        .critical {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .critical .label,
+        .critical .value,
+        .critical .unit {
+            color: white;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .info-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .info-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .performance-table {
+            margin-top: 20px;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-high {
+            background: #dc3545;
+            color: white;
+        }
+
+        .recommendations {
+            background: #d1ecf1;
+            border-left: 5px solid #0c5460;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .recommendations h3 {
+            color: #0c5460;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            color: #0c5460;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .recommendations li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0c5460;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 DoS Vulnerability Assessment Report</h1>
+            <p>Apache Bench Load Testing Results</p>
+            <p>Target: http://localhost:8888/api/setting/list</p>
+        </div>
+
+        <div class="vulnerability-alert">
+            <h2>Denial of Service (DoS) Vulnerability Detected</h2>
+            <p><strong>Status:</strong> <span class="severity-badge severity-high">High Risk</span></p>
+            <p><strong>Issue:</strong> The server successfully handled 1000 concurrent requests without rate limiting, indicating a potential DoS vulnerability.</p>
+            <p><strong>Impact:</strong> Attackers can exhaust server resources by sending excessive requests, making the service unavailable to legitimate users.</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>📊 Test Configuration</h2>
+                <table class="info-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Server Hostname</td>
+                        <td>localhost</td>
+                    </tr>
+                    <tr>
+                        <td>Server Port</td>
+                        <td>8888</td>
+                    </tr>
+                    <tr>
+                        <td>Endpoint Tested</td>
+                        <td>/api/setting/list</td>
+                    </tr>
+                    <tr>
+                        <td>Concurrency Level</td>
+                        <td>100 simultaneous connections</td>
+                    </tr>
+                    <tr>
+                        <td>Total Requests</td>
+                        <td>1000</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>⚡ Performance Metrics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card critical">
+                        <div class="label">Failed Requests</div>
+                        <div class="value">0<span class="unit">/ 1000</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Time Taken</div>
+                        <div class="value">35.34<span class="unit">sec</span></div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="label">Requests per Second</div>
+                        <div class="value">28.30<span class="unit">req/s</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Transfer Rate</div>
+                        <div class="value">108.16<span class="unit">kb/s</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Complete Requests</div>
+                        <div class="value">1000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Total Transferred</div>
+                        <div class="value">3.91<span class="unit">MB</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⏱️ Response Time Analysis</h2>
+                <table class="info-table performance-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Min (ms)</th>
+                            <th>Avg (ms)</th>
+                            <th>Max (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Connect</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>Processing</td>
+                            <td>204</td>
+                            <td>3357</td>
+                            <td>5895</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>204</td>
+                            <td>3357</td>
+                            <td>5899</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="recommendations">
+                    <h3>🛡️ Recommended Security Fixes</h3>
+                    <ul>
+                        <li>Implement rate limiting using <strong>express-rate-limit</strong> middleware</li>
+                        <li>Set request throttling (e.g., 100 requests per 15 minutes per IP)</li>
+                        <li>Configure request timeout limits</li>
+                        <li>Implement request body size limits</li>
+                        <li>Add slowdown middleware for gradual response delays</li>
+                        <li>Consider using a reverse proxy (Nginx) with rate limiting</li>
+                        <li>Monitor and log suspicious traffic patterns</li>
+                        <li>Implement CAPTCHA for sensitive endpoints</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Apache Bench Version 2.3</strong></p>
+            <p>Copyright 1996 Adam Twiss, Zeus Technology Ltd</p>
+            <p>Licensed to The Apache Software Foundation</p>
+            <p style="margin-top: 15px; color: #999;">Report Generated: <script>document.write(new Date().toLocaleString())</script></p>
+        </div>
+    </div>
+</body>
+</html>

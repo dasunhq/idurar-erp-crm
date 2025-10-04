@@ -39,21 +39,42 @@ methods.delete = async (req, res) => {
 
 methods.update = async (req, res) => {
   const { id } = req.params;
+  
+  // Validate that payment mode ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid payment mode ID format',
+    });
+  }
+  
   const paymentMode = await Model.findOne({
-    _id: req.params.id,
+    _id: new mongoose.Types.ObjectId(id),
     removed: false,
   }).exec();
   const { isDefault = paymentMode.isDefault, enabled = paymentMode.enabled } = req.body;
 
+  // Create a validated ObjectId from the ID
+  const objectId = new mongoose.Types.ObjectId(id);
+  
   // if isDefault:false , we update first - isDefault:true
   // if enabled:false and isDefault:true , we update first - isDefault:true
   if (!isDefault || (!enabled && isDefault)) {
-    await Model.findOneAndUpdate({ _id: { $ne: id }, enabled: true }, { isDefault: true });
+    await Model.findOneAndUpdate(
+      { _id: { $ne: objectId }, enabled: true },
+      { isDefault: true },
+      { runValidators: true }
+    );
   }
 
   // if isDefault:true and enabled:true, we update other paymentMode and make is isDefault:false
   if (isDefault && enabled) {
-    await Model.updateMany({ _id: { $ne: id } }, { isDefault: false });
+    await Model.updateMany(
+      { _id: { $ne: objectId } },
+      { isDefault: false },
+      { runValidators: true }
+    );
   }
 
   const paymentModeCount = await Model.countDocuments({});
@@ -67,9 +88,26 @@ methods.update = async (req, res) => {
     });
   }
 
-  const result = await Model.findOneAndUpdate({ _id: id }, req.body, {
-    new: true,
+  // Create a sanitized body object with only allowed fields
+  const allowedFields = ['name', 'description', 'enabled', 'isDefault'];
+  const sanitizedBody = {};
+  
+  // Only copy allowed fields from req.body to sanitizedBody
+  allowedFields.forEach(field => {
+    if (req.body[field] !== undefined) {
+      sanitizedBody[field] = req.body[field];
+    }
   });
+  
+  // Use the validated objectId in the final update with sanitized body
+  const result = await Model.findOneAndUpdate(
+    { _id: objectId },
+    sanitizedBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   return res.status(200).json({
     success: true,
