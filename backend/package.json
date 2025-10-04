@@ -14,36 +14,44 @@
     "reset": "node src/setup/reset.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.509.0",
+    "@aws-sdk/client-s3": "^3.529.0",
     "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.6",
+    "body-parser": "^2.0.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "currency.js": "2.0.4",
     "dotenv": "16.3.1",
-    "express": "^4.18.2",
-    "express-fileupload": "^1.4.3",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.18.2",
+    "form-data": "^4.0.4",
     "glob": "10.3.10",
+    "handlebars": "^4.7.8",
     "helmet": "^8.1.0",
-    "html-pdf": "^3.0.1",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
-    "mongoose": "^8.1.1",
+    "mongoose": "^8.9.5",
     "mongoose-autopopulate": "^1.1.0",
-    "multer": "^1.4.4",
+    "multer": "^2.0.2",
     "node-cache": "^5.1.2",
+    "on-headers": "^1.0.3",
     "openai": "^4.27.0",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.2",
+    "pug-code-gen": "^3.0.3",
+    "puppeteer": "^24.23.0",
     "resend": "^2.0.0",
-    "shortid": "^2.2.16",
+    "send": "^0.19.0",
+    "serve-static": "^1.16.0",
+    "shortid": "^2.2.17",
+    "tar-fs": "^1.15.4",
     "transliteration": "^2.3.5"
   },
   "devDependencies": {
@@ -63,5 +71,8 @@
   "bugs": {
     "url": "https://github.com/idurar/idurar-erp-crm//issues"
   },
-  "homepage": "https://github.com/idurar/idurar-erp-crm/#readme"
+  "homepage": "https://github.com/idurar/idurar-erp-crm/#readme",
+  "securityNotes": {
+    "fixed-vulnerabilities": "2025-10-04: Fixed Snyk vulnerabilities - removed html-pdf (critical form-data vulnerability), removed express-fileupload (arbitrary file upload), added puppeteer for secure PDF generation. See SECURITY-FIXES-SNYK-2025-10-04.md for details."
+  }
 }
