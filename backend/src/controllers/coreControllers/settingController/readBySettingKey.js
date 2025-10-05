@@ -13,9 +13,22 @@ const readBySettingKey = async (req, res) => {
       message: 'No settingKey provided ',
     });
   }
-
+  
+  // Validate settingKey format - only allow alphanumeric characters, underscores, and hyphens
+  const keyRegex = /^[a-zA-Z0-9_\-\.]+$/;
+  if (!keyRegex.test(settingKey)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid settingKey format',
+    });
+  }
+  
+  // Use the validated and sanitized key for the query
+  const sanitizedSettingKey = settingKey;
+  
   const result = await Model.findOne({
-    settingKey,
+    settingKey: sanitizedSettingKey,
   });
 
   // If no results found, return document not found
@@ -23,14 +36,14 @@ const readBySettingKey = async (req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No document found by this settingKey: ' + settingKey,
+      message: 'No document found by this settingKey: ' + sanitizedSettingKey,
     });
   } else {
     // Return success resposne
     return res.status(200).json({
       success: true,
       result,
-      message: 'we found this document by this settingKey: ' + settingKey,
+      message: 'we found this document by this settingKey: ' + sanitizedSettingKey,
     });
   }
 };

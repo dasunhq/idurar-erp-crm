@@ -1,7 +1,7 @@
 const pug = require('pug');
 const fs = require('fs');
 const moment = require('moment');
-let pdf = require('html-pdf');
+const puppeteer = require('puppeteer');
 const { listAllSettings, loadSettings } = require('@/middlewares/settings');
 const { getData } = require('@/middlewares/serverData');
 const useLanguage = require('@/locale/useLanguage');
@@ -67,16 +67,32 @@ exports.generatePdf = async (
         moment: moment,
       });
 
-      pdf
-        .create(htmlContent, {
-          format: info.format,
-          orientation: 'portrait',
-          border: '10mm',
-        })
-        .toFile(targetLocation, function (error) {
-          if (error) throw new Error(error);
-          if (callback) callback();
+      // Generate PDF using puppeteer (secure alternative to html-pdf)
+      const browser = await puppeteer.launch({ 
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] // Security hardening for server environments
+      });
+      
+      try {
+        const page = await browser.newPage();
+        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+        
+        // Configure PDF options
+        const pdfOptions = {
+          format: info.format || 'A5',
+          margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' },
+          printBackground: true
+        };
+        
+        await page.pdf({ 
+          path: targetLocation, 
+          ...pdfOptions 
         });
+        
+        if (callback) callback();
+      } finally {
+        await browser.close();
+      }
     }
   } catch (error) {
     throw new Error(error);

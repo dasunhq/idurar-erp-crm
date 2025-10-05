@@ -5,7 +5,14 @@ const Model = mongoose.model('Setting');
 const listBySettingKey = async (req, res) => {
   // Find document by id
 
-  const settingKeyArray = req.query.settingKeyArray ? req.query.settingKeyArray.split(',') : [];
+    if (typeof req.query.settingKeyArray !== 'string') {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'settingKeyArray parameter must be a string',
+    });
+  }
+  const settingKeyArray = req.query.settingKeyArray.split(',');
 
   const settingsToShow = { $or: [] };
 

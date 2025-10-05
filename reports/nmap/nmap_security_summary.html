@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDURAR ERP CRM - Nmap Security Scan Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .scan-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .finding {
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            background-color: #ebf5fb;
+            margin-bottom: 10px;
+        }
+        .security-header {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .value {
+            margin-left: 20px;
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+        }
+        .positive {
+            color: #27ae60;
+        }
+        .warning {
+            color: #e67e22;
+        }
+        .critical {
+            color: #c0392b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IDURAR ERP CRM - Nmap Security Scan Summary</h1>
+        <p>Generated on: October 5, 2025</p>
+        
+        <div class="scan-summary">
+            <h2>Scan Overview</h2>
+            <p><strong>Target:</strong> localhost (127.0.0.1 and ::1)</p>
+            <p><strong>Ports Scanned:</strong> 3000, 8888</p>
+            <p><strong>Total scan time:</strong> ~48 seconds</p>
+        </div>
+
+        <h2>Port Status Summary</h2>
+        <table>
+            <tr>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>Status (IPv4)</th>
+                <th>Status (IPv6)</th>
+                <th>Service</th>
+            </tr>
+            <tr>
+                <td>3000</td>
+                <td>TCP</td>
+                <td>Closed</td>
+                <td>Open</td>
+                <td>React Frontend (Vite)</td>
+            </tr>
+            <tr>
+                <td>8888</td>
+                <td>TCP</td>
+                <td>Open</td>
+                <td>Open</td>
+                <td>Node.js Backend API</td>
+            </tr>
+        </table>
+
+        <h2>Security Headers Analysis</h2>
+        <h3>Frontend (Port 3000)</h3>
+
+        <div class="finding">
+            <p class="security-header">Content-Security-Policy:</p>
+            <p class="value">default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://lh3.googleusercontent.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' http://localhost:3000 http://localhost:8888 ws://localhost:3000 ws://localhost:3000/__vite_hmr ws://localhost:8888; frame-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'</p>
+            <p class="warning">Note: Uses 'unsafe-inline' and 'unsafe-eval' which are less secure but required for development mode.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">X-Content-Type-Options:</p>
+            <p class="value">nosniff</p>
+            <p class="positive">Good: Helps prevent MIME type sniffing attacks.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">X-Frame-Options:</p>
+            <p class="value">DENY</p>
+            <p class="positive">Good: Prevents the page from being loaded in an iframe, protecting against clickjacking.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">X-XSS-Protection:</p>
+            <p class="value">1; mode=block</p>
+            <p class="positive">Good: Enables browser's built-in XSS filtering.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">Referrer-Policy:</p>
+            <p class="value">strict-origin-when-cross-origin</p>
+            <p class="positive">Good: Limits the amount of information sent in the referrer header.</p>
+        </div>
+
+        <h3>Backend (Port 8888)</h3>
+
+        <div class="finding">
+            <p class="security-header">Content-Security-Policy:</p>
+            <p class="value">default-src 'self';script-src 'self' 'nonce-[randomized]' 'sha256-Z2/iFzh9VMlVkEOar1f/oSHWwQk3ve1qk/C2WdsC4Xk=';style-src 'self' https://fonts.googleapis.com 'unsafe-inline';img-src 'self' data: https://lh3.googleusercontent.com;font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;connect-src 'self';frame-src 'self';frame-ancestors 'none';object-src 'none';base-uri 'self';form-action 'self';media-src 'self';worker-src 'self';manifest-src 'self';upgrade-insecure-requests;script-src-attr 'none'</p>
+            <p class="positive">Good: Uses nonce-based CSP which is more secure than 'unsafe-inline'.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">Cross-Origin-Opener-Policy:</p>
+            <p class="value">same-origin</p>
+            <p class="positive">Good: Prevents cross-origin pages from accessing the window object.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">Cross-Origin-Resource-Policy:</p>
+            <p class="value">same-origin</p>
+            <p class="positive">Good: Prevents other websites from embedding resources from your site.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">Strict-Transport-Security:</p>
+            <p class="value">max-age=31536000; includeSubDomains; preload</p>
+            <p class="positive">Good: Forces browsers to use HTTPS for the site.</p>
+        </div>
+
+        <div class="finding">
+            <p class="security-header">Access-Control-Allow-Credentials:</p>
+            <p class="value">true</p>
+            <p class="warning">Caution: Allows cookies to be sent in cross-origin requests. Make sure CORS is properly configured.</p>
+        </div>
+
+        <h2>Security Recommendations</h2>
+        <ol>
+            <li>For production, remove 'unsafe-inline' and 'unsafe-eval' from CSP headers.</li>
+            <li>Consider implementing rate limiting to prevent brute force attacks.</li>
+            <li>Configure proper CORS settings to restrict access to trusted domains only.</li>
+            <li>Regularly update dependencies to address any security vulnerabilities.</li>
+            <li>Consider implementing additional security headers such as Permissions-Policy.</li>
+        </ol>
+
+        <h2>Conclusion</h2>
+        <p>The Nmap scan shows that the application has implemented many good security practices, particularly with HTTP security headers. The frontend development server is accessible only on IPv6 localhost (::1), while the backend API is accessible on both IPv4 and IPv6. Both services return 500 Internal Server Error or 403 Forbidden for invalid requests, which is appropriate as it doesn't reveal specific error details to potential attackers.</p>
+
+        <p>The primary security improvement would be to tighten the CSP policy in production by removing 'unsafe-inline' and 'unsafe-eval' directives where possible.</p>
+
+        <p><strong>Full scan details are available in the XML and HTML reports:</strong></p>
+        <ul>
+            <li><code>nmap_scan.xml</code> - Raw IPv4 scan results</li>
+            <li><code>nmap_scan_ipv6.xml</code> - Raw IPv6 scan results</li>
+            <li><code>nmap_report.html</code> - Formatted IPv4 scan results</li>
+            <li><code>nmap_report_ipv6.html</code> - Formatted IPv6 scan results</li>
+        </ul>
+    </div>
+</body>
+</html>

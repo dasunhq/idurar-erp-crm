@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react';
 import { useEffect } from 'react';
 import { selectAppSettings } from '@/redux/settings/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectAuth } from '@/redux/auth/selectors';
 
 import { Layout } from 'antd';
 
@@ -32,10 +33,14 @@ export default function ErpCrmApp() {
   const { isMobile } = useResponsive();
 
   const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(selectAuth);
 
   useLayoutEffect(() => {
-    dispatch(settingsAction.list({ entity: 'setting' }));
-  }, []);
+    // Only load settings if user is authenticated
+    if (isLoggedIn) {
+      dispatch(settingsAction.list({ entity: 'setting' }));
+    }
+  }, [isLoggedIn]);
 
   // const appSettings = useSelector(selectAppSettings);
 
@@ -48,6 +53,17 @@ export default function ErpCrmApp() {
   //   }
   // }, [appSettings]);
 
+  // If user is not logged in, show loading or redirect to login
+  if (!isLoggedIn) {
+    return <PageLoader />;
+  }
+
+  // If user is logged in but settings are not loaded yet, show loading
+  if (isLoggedIn && !settingIsloaded) {
+    return <PageLoader />;
+  }
+
+  // If user is logged in and settings are loaded, show the main app
   if (settingIsloaded)
     return (
       <Layout hasSider>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SonarQube Security Report - IDURAR ERP CRM</title>
+    <style>
+        :root {
+            --primary-color: #4b9fd5;
+            --secondary-color: #236a97;
+            --accent-color: #e05d44;
+            --success-color: #00aa00;
+            --warning-color: #ed7d20;
+            --info-color: #4b9fd5;
+            --neutral-color: #b4b4b4;
+            --dark-color: #262626;
+            --light-color: #f9f9f9;
+            --border-color: #e1e4e8;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .report-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .report-header h1 {
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .report-header p {
+            opacity: 0.9;
+        }
+        
+        .report-date {
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .stat-value {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card.hotspots {
+            border-top-color: var(--accent-color);
+        }
+        
+        .stat-card.bugs {
+            border-top-color: var(--warning-color);
+        }
+        
+        .stat-card.code-smells {
+            border-top-color: var(--info-color);
+        }
+        
+        .stat-card.vulnerabilities {
+            border-top-color: var(--success-color);
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            color: var(--secondary-color);
+        }
+        
+        .hotspot-count {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .hotspot-list {
+            list-style: none;
+        }
+        
+        .hotspot-item {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .hotspot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #f6f8fa;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .hotspot-title {
+            font-weight: bold;
+        }
+        
+        .hotspot-severity {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .severity-high {
+            background-color: var(--accent-color);
+        }
+        
+        .severity-medium {
+            background-color: var(--warning-color);
+        }
+        
+        .severity-low {
+            background-color: var(--info-color);
+        }
+        
+        .hotspot-body {
+            padding: 15px;
+        }
+        
+        .hotspot-message {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .hotspot-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .hotspot-detail {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #555;
+        }
+        
+        .file-path {
+            font-family: monospace;
+            padding: 5px 10px;
+            background-color: #f6f8fa;
+            border-radius: 4px;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+        
+        .vulnerability-category {
+            text-transform: uppercase;
+            font-size: 12px;
+            background-color: #e0e0e0;
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #666;
+            font-size: 14px;
+        }
+
+        .category-filter {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .filter-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .hotspot-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .hotspot-severity {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-header">
+            <h1>SonarQube Security Report</h1>
+            <p>IDURAR ERP CRM - Open Source ERP & CRM</p>
+            <div class="report-date">Generated on September 23, 2025</div>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-card hotspots">
+                <h3>Security Hotspots</h3>
+                <div class="stat-value">32</div>
+            </div>
+            <div class="stat-card vulnerabilities">
+                <h3>Vulnerabilities</h3>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat-card bugs">
+                <h3>Bugs</h3>
+                <div class="stat-value">9</div>
+            </div>
+            <div class="stat-card code-smells">
+                <h3>Code Smells</h3>
+                <div class="stat-value">337</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Security Hotspots</h2>
+                <span class="hotspot-count">32 issues</span>
+            </div>
+
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">All Categories</button>
+                <button class="filter-btn" data-category="auth">Authentication</button>
+                <button class="filter-btn" data-category="dos">DOS</button>
+                <button class="filter-btn" data-category="insecure-conf">Insecure Configuration</button>
+                <button class="filter-btn" data-category="others">Others</button>
+            </div>
+            
+            <ul class="hotspot-list">
+                <!-- Authentication Security Hotspots -->
+                <li class="hotspot-item" data-category="auth">
+                    <div class="hotspot-header">
+                        <div class="hotspot-title">
+                            <span class="vulnerability-category">AUTH</span>
+                            Hardcoded Credentials
+                        </div>
+                        <div class="hotspot-severity severity-high">HIGH</div>
+                    </div>
+                    <div class="hotspot-body">
+                        <div class="hotspot-message">Review potentially hardcoded credentials in translation files.</div>
+                        <div class="hotspot-details">
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Files:</div>
+                                <div class="file-path">backend/src/locale/translation/en_us.js (10+ occurrences)</div>
+                                <div class="file-path">frontend/src/locale/translation/en_us.js (10+ occurrences)</div>
+                                <div class="file-path">frontend/src/pages/Login.jsx</div>
+                            </div>
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Rule:</div>
+                                <div>javascript:S2068</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- DOS Security Hotspots -->
+                <li class="hotspot-item" data-category="dos">
+                    <div class="hotspot-header">
+                        <div class="hotspot-title">
+                            <span class="vulnerability-category">DOS</span>
+                            Unsafe Content Length Limits
+                        </div>
+                        <div class="hotspot-severity severity-medium">MEDIUM</div>
+                    </div>
+                    <div class="hotspot-body">
+                        <div class="hotspot-message">Make sure the content length limit is safe.</div>
+                        <div class="hotspot-details">
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Files:</div>
+                                <div class="file-path">backend/src/middlewares/secureUpload.js</div>
+                                <div class="file-path">backend/src/middlewares/uploadMiddleware/LocalSingleStorage.js</div>
+                                <div class="file-path">backend/src/middlewares/uploadMiddleware/singleStorageUpload.js</div>
+                            </div>
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Rule:</div>
+                                <div>javascript:S5693</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="hotspot-item" data-category="dos">
+                    <div class="hotspot-header">
+                        <div class="hotspot-title">
+                            <span class="vulnerability-category">DOS</span>
+                            Vulnerable Regex Patterns
+                        </div>
+                        <div class="hotspot-severity severity-medium">MEDIUM</div>
+                    </div>
+                    <div class="hotspot-body">
+                        <div class="hotspot-message">Make sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service.</div>
+                        <div class="hotspot-details">
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Files:</div>
+                                <div class="file-path">backend/src/controllers/middlewaresControllers/createAuthMiddleware/checkAndCorrectURL.js</div>
+                                <div class="file-path">backend/src/handlers/errorHandlers.js</div>
+                            </div>
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Rule:</div>
+                                <div>javascript:S5852</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Insecure Configuration Hotspots -->
+                <li class="hotspot-item" data-category="insecure-conf">
+                    <div class="hotspot-header">
+                        <div class="hotspot-title">
+                            <span class="vulnerability-category">CONFIG</span>
+                            Insecure Cookie Configuration
+                        </div>
+                        <div class="hotspot-severity severity-low">LOW</div>
+                    </div>
+                    <div class="hotspot-body">
+                        <div class="hotspot-message">Make sure creating this cookie without the "secure" flag is safe.</div>
+                        <div class="hotspot-details">
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Files:</div>
+                                <div class="file-path">backend/src/app.js</div>
+                            </div>
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Rule:</div>
+                                <div>javascript:S2092</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Other Security Hotspots -->
+                <li class="hotspot-item" data-category="others">
+                    <div class="hotspot-header">
+                        <div class="hotspot-title">
+                            <span class="vulnerability-category">CSP</span>
+                            Content Security Policy Issues
+                        </div>
+                        <div class="hotspot-severity severity-low">LOW</div>
+                    </div>
+                    <div class="hotspot-body">
+                        <div class="hotspot-message">Multiple Content Security Policy issues in the app configuration.</div>
+                        <div class="hotspot-details">
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Files:</div>
+                                <div class="file-path">backend/src/app.js</div>
+                            </div>
+                            <div class="hotspot-detail">
+                                <div class="detail-label">Issues:</div>
+                                <div>- Not enabling content security policy fetch directives</div>
+                                <div>- Allowing mixed-content</div>
+                                <div>- Disabling content security policy frame-ancestors directive</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Recommendations</h2>
+            </div>
+            
+            <ul style="padding-left: 20px;">
+                <li>
+                    <strong>Review and remove hardcoded credentials</strong> - Multiple occurrences of hardcoded credentials were detected in translation files and login page. Replace them with environment variables or secure credential management.
+                </li>
+                <li>
+                    <strong>Implement safe content length limits</strong> - Review the file upload handlers to ensure they have appropriate size limits to prevent denial of service attacks.
+                </li>
+                <li>
+                    <strong>Fix vulnerable regex patterns</strong> - Replace current regex implementations with patterns that are not susceptible to ReDoS (Regular Expression Denial of Service) attacks.
+                </li>
+                <li>
+                    <strong>Secure cookie configurations</strong> - Add the 'secure' flag to cookies to ensure they are only transmitted over HTTPS.
+                </li>
+                <li>
+                    <strong>Enhance Content Security Policy</strong> - Implement a comprehensive Content Security Policy to protect against XSS and data injection attacks.
+                </li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>SonarQube Security Report for IDURAR ERP CRM | Generated on September 23, 2025</p>
+            <p>Dashboard URL: <a href="http://localhost:9000/dashboard?id=idurar-erp-crm">http://localhost:9000/dashboard?id=idurar-erp-crm</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality for security hotspots
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const hotspotItems = document.querySelectorAll('.hotspot-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    
+                    hotspotItems.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

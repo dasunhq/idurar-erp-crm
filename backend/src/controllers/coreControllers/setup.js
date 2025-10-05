@@ -18,50 +18,71 @@ const setup = async (req, res) => {
 
   const { name, email, password, language, timezone, country, config = {} } = req.body;
 
-  const objectSchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string()
-      .email({ tlds: { allow: true } })
-      .required(),
-    password: Joi.string().required(),
-  });
-
-  const { error, value } = objectSchema.validate({ name, email, password });
-  if (error) {
-    return res.status(409).json({
-      success: false,
-      result: null,
-      error: error,
-      message: 'Invalid/Missing credentials.',
-      errorMessage: error.message,
+    const objectSchema = Joi.object({
+      name: Joi.string().required(),
+      email: Joi.string()
+        .email({ tlds: { allow: true } })
+        .required(),
+      password: Joi.string().required(),
     });
-  }
 
-  const salt = uniqueId();
+    const { error, value } = objectSchema.validate({ name, email, password });
+    if (error) {
+      return res.status(409).json({
+        success: false,
+        result: null,
+        error: error,
+        message: 'Invalid/Missing credentials.',
+        errorMessage: error.message,
+      });
+    }
 
-  const passwordHash = newAdminPassword.generateHash(salt, password);
+    const salt = uniqueId();
 
-  const accountOwnner = {
-    email,
-    name,
-    role: 'owner',
-  };
-  const result = await new Admin(accountOwnner).save();
+    const passwordHash = newAdminPassword.generateHash(salt, password);
 
-  const AdminPasswordData = {
-    password: passwordHash,
-    emailVerified: true,
-    salt: salt,
-    user: result._id,
-  };
-  await new AdminPassword(AdminPasswordData).save();
+    const accountOwnner = {
+      email,
+      name,
+      role: 'owner',
+    };
+    const result = await new Admin(accountOwnner).save();
 
-  const settingData = [];
+    const AdminPasswordData = {
+      password: passwordHash,
+      emailVerified: true,
+      salt: salt,
+      user: result._id,
+    };
+    await new AdminPassword(AdminPasswordData).save();
 
-  const settingsFiles = globSync('./src/setup/defaultSettings/**/*.json');
+    const settingData = [];
+    const settingsFiles = globSync('./src/setup/defaultSettings/**/*.json');
 
-  for (const filePath of settingsFiles) {
-    const file = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    // Limit the number of files to prevent resource exhaustion
+    if (settingsFiles.length > 100) {
+      throw new Error('Too many settings files detected, possible security issue');
+    }
+
+    // Use async file operations and Promise.all for better performance and resource management
+    const filePromises = settingsFiles.map(async (filePath) => {
+      try {
+        const fileContent = await fs.promises.readFile(filePath, 'utf-8');
+
+        // Limit file size to prevent memory exhaustion
+        if (fileContent.length > 1024 * 1024) {
+          // 1MB limit
+          throw new Error(`Settings file too large: ${filePath}`);
+        }
+
+        return JSON.parse(fileContent);
+      } catch (error) {
+        console.error(`Error reading settings file ${filePath}:`, error);
+        throw new Error(`Invalid settings file: ${filePath}`);
+      }
+    });
+
+    const files = await Promise.all(filePromises);
 
     const settingsToUpdate = {
       idurar_app_email: email,
@@ -76,20 +97,17 @@ const setup = async (req, res) => {
       return settingValue ? { ...x, settingValue } : { ...x };
     });
 
-    settingData.push(...newSettings);
-  }
+    await Setting.insertMany(settingData);
 
-  await Setting.insertMany(settingData);
+    await Taxes.insertMany([{ taxName: 'Tax 0%', taxValue: '0', isDefault: true }]);
 
-  await Taxes.insertMany([{ taxName: 'Tax 0%', taxValue: '0', isDefault: true }]);
-
-  await PaymentMode.insertMany([
-    {
-      name: 'Default Payment',
-      description: 'Default Payment Mode (Cash , Wire Transfert)',
-      isDefault: true,
-    },
-  ]);
+    await PaymentMode.insertMany([
+      {
+        name: 'Default Payment',
+        description: 'Default Payment Mode (Cash , Wire Transfert)',
+        isDefault: true,
+      },
+    ]);
 
   return res.status(200).json({
     success: true,

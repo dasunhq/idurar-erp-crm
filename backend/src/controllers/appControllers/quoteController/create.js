@@ -36,12 +36,26 @@ const create = async (req, res) => {
 
   // Creating a new document in the collection
   const result = await new Model(body).save();
-  const fileId = 'quote-' + result._id + '.pdf';
+  
+  // Validate that the result._id is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(result._id)) {
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Error: Invalid quote ID format generated',
+    });
+  }
+  
+  // Create sanitized values
+  const sanitizedId = new mongoose.Types.ObjectId(result._id);
+  const fileId = 'quote-' + sanitizedId.toString() + '.pdf';
+  
   const updateResult = await Model.findOneAndUpdate(
-    { _id: result._id },
+    { _id: sanitizedId },
     { pdf: fileId },
     {
       new: true,
+      runValidators: true, // Run model validators
     }
   ).exec();
   // Returning successfull response

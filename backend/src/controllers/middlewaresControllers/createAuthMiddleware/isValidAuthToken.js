@@ -28,9 +28,21 @@ const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SE
         message: 'Token verification failed, authorization denied.',
         jwtExpired: true,
       });
+    
+    // Validate that user ID from token is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(verified.id)) {
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Invalid user ID format in token, authorization denied.',
+        jwtExpired: true,
+      });
+    }
 
-    const userPasswordPromise = UserPassword.findOne({ user: verified.id, removed: false });
-    const userPromise = User.findOne({ _id: verified.id, removed: false });
+    // Use the validated ObjectId in database queries
+    const userId = new mongoose.Types.ObjectId(verified.id);
+    const userPasswordPromise = UserPassword.findOne({ user: userId, removed: false });
+    const userPromise = User.findOne({ _id: userId, removed: false });
 
     const [user, userPassword] = await Promise.all([userPromise, userPasswordPromise]);
 

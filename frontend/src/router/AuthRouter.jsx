@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
+import AuthCallback from '@/pages/AuthCallback';
 
 import ForgetPassword from '@/pages/ForgetPassword';
 import ResetPassword from '@/pages/ResetPassword';
@@ -16,6 +17,7 @@ export default function AuthRouter() {
       <Route element={<Login />} path="/" />
       <Route element={<Login />} path="/login" />
       <Route element={<Navigate to="/login" replace />} path="/logout" />
+      <Route element={<AuthCallback />} path="/auth/callback" />
       <Route element={<ForgetPassword />} path="/forgetpassword" />
       <Route element={<ResetPassword />} path="/resetpassword/:userId/:resetToken" />
       <Route path="*" element={<NotFound />} />

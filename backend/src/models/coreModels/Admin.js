@@ -32,6 +32,16 @@ const adminSchema = new Schema({
     default: 'owner',
     enum: ['owner'],
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
+  facebookId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 });
 
 module.exports = mongoose.model('Admin', adminSchema);
