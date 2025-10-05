@@ -10,9 +10,11 @@
       name="description"
       content="IDURAR ERP CRM Open Source based on node.js react.js Antd Redux"
     />
+    <!-- CSP will be applied by middleware -->
   </head>
   <body>
     <div id="root"></div>
+    <!-- Using type="module" ensures proper loading with CSP -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

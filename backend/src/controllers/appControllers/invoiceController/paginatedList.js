@@ -9,7 +9,17 @@ const paginatedList = async (req, res) => {
 
   const { sortBy = 'enabled', sortValue = -1, filter, equal } = req.query;
 
-  const fieldsArray = req.query.fields ? req.query.fields.split(',') : [];
+    let fieldsArray = [];
+  if (req.query.fields) {
+    if (typeof req.query.fields !== 'string') {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'fields parameter must be a string',
+      });
+    }
+    fieldsArray = req.query.fields.split(',');
+  }
 
   let fields;
 

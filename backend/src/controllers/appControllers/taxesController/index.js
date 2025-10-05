@@ -39,21 +39,51 @@ methods.delete = async (req, res) => {
 
 methods.update = async (req, res) => {
   const { id } = req.params;
+  
+  // Validate that tax ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: 'Invalid tax ID format',
+    });
+  }
+  
+  // Create a validated ObjectId from the ID
+  const objectId = new mongoose.Types.ObjectId(id);
+  
   const tax = await Model.findOne({
-    _id: req.params.id,
+    _id: objectId,
     removed: false,
   }).exec();
+  
+  if (!tax) {
+    return res.status(404).json({
+      success: false,
+      result: null,
+      message: 'Tax not found',
+    });
+  }
+  
   const { isDefault = tax.isDefault, enabled = tax.enabled } = req.body;
 
   // if isDefault:false , we update first - isDefault:true
   // if enabled:false and isDefault:true , we update first - isDefault:true
   if (!isDefault || (!enabled && isDefault)) {
-    await Model.findOneAndUpdate({ _id: { $ne: id }, enabled: true }, { isDefault: true });
+    await Model.findOneAndUpdate(
+      { _id: { $ne: objectId }, enabled: true },
+      { isDefault: true },
+      { runValidators: true }
+    );
   }
 
   // if isDefault:true and enabled:true, we update other taxes and make is isDefault:false
   if (isDefault && enabled) {
-    await Model.updateMany({ _id: { $ne: id } }, { isDefault: false });
+    await Model.updateMany(
+      { _id: { $ne: objectId } },
+      { isDefault: false },
+      { runValidators: true }
+    );
   }
 
   const taxesCount = await Model.countDocuments({});
@@ -67,9 +97,25 @@ methods.update = async (req, res) => {
     });
   }
 
-  const result = await Model.findOneAndUpdate({ _id: id }, req.body, {
-    new: true,
+  // Create a sanitized body object with only allowed fields
+  const allowedFields = ['name', 'description', 'value', 'enabled', 'isDefault'];
+  const sanitizedBody = {};
+  
+  // Only copy allowed fields from req.body to sanitizedBody
+  allowedFields.forEach(field => {
+    if (req.body[field] !== undefined) {
+      sanitizedBody[field] = req.body[field];
+    }
   });
+
+  const result = await Model.findOneAndUpdate(
+    { _id: objectId },
+    sanitizedBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   return res.status(200).json({
     success: true,
